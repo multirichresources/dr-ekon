@@ -241,6 +241,7 @@ input:focus,textarea:focus{outline:none;border-bottom-color:var(--gold);backgrou
 .slot small{font-family:var(--label);font-style:normal;font-weight:600;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 .slot[aria-pressed="true"]{background:var(--gold);border-color:var(--gold);border-bottom-color:var(--gold-deep);color:var(--on-gold);box-shadow:0 0 0 3px rgba(255,198,26,.18),0 10px 24px -8px rgba(255,198,26,.6)}
 .slot[aria-pressed="true"] small{color:var(--on-gold)}
+.slot.full small{color:var(--hot)}
 .slot:disabled{opacity:.32;cursor:not-allowed;text-decoration:line-through;border-style:dashed}
 .slot-hint{font-size:14px;color:var(--dim)}
 @media (prefers-reduced-motion: reduce){.day,.slot{transition:none}.day:hover:not(:disabled),.slot:hover:not(:disabled){transform:none}}
@@ -443,6 +444,7 @@ input:focus,textarea:focus{outline:none;border-bottom-color:var(--gold);backgrou
         </div>
 
         <div class="card-body" id="formBody">
+          <input type="text" id="hp_web" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
           <div class="row2">
             <div class="field" id="f-nama">
               <label for="nama">Nama</label>
@@ -634,6 +636,7 @@ input:focus,textarea:focus{outline:none;border-bottom-color:var(--gold);backgrou
 (function(){
   /* ===== Tetapan bengkel — ubah di sini ===== */
   var WA_NUMBER = "60172675161";
+  var SHEET_URL = "https://script.google.com/macros/s/AKfycbwoyuf-7FnNpxcr1gg_WuYJfSH1aVuExQbITBV-enYl7uEYBJ85nB4APsIt4IkKtHNn/exec";                  /* URL Web app Google Apps Script. Kosong = WhatsApp sahaja */
   var OPEN = {h:9, m:30}, CLOSE = {h:18, m:0};
   var CLOSED_DAYS = [0];               /* 0 = Ahad */
   var SLOTS = ["09:30","10:30","11:30","12:30","14:30","15:30","16:30"];
@@ -719,22 +722,39 @@ input:focus,textarea:focus{outline:none;border-bottom-color:var(--gold);backgrou
   calGrid.addEventListener("click",function(e){
     var b=e.target.closest(".cday"); if(!b||b.disabled) return;
     state.date=new Date(view.y,view.m,+b.getAttribute("data-d")); state.slot=null;
-    renderCal(); renderSlots(); clearErr("f-tarikh"); update();
+    renderCal(); renderSlots(); clearErr("f-tarikh"); update(); fetchTaken(false);
     calPicked.innerHTML='Dipilih: <b>'+HARI[state.date.getDay()]+', '+state.date.getDate()+' '+BULAN[state.date.getMonth()]+' '+state.date.getFullYear()+'</b>';
   });
   calPrev.addEventListener("click",function(){ if(calPrev.disabled) return; view.m--; if(view.m<0){view.m=11;view.y--;} renderCal(); });
   calNext.addEventListener("click",function(){ if(calNext.disabled) return; view.m++; if(view.m>11){view.m=0;view.y++;} renderCal(); });
   renderCal();
 
+  var taken={}, lastFetch=0;
+  function dkey(d){return d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());}
+  function isTaken(d,s){var t=taken[dkey(d)];return !!(t&&t.indexOf(s)>-1);}
+  function fetchTaken(force){
+    if(!SHEET_URL) return;
+    var now=Date.now(); if(!force&&now-lastFetch<60000) return; lastFetch=now;
+    try{
+      fetch(SHEET_URL+"?action=slots").then(function(r){return r.json();}).then(function(j){
+        if(j&&j.taken){taken=j.taken;
+          if(state.date&&state.slot&&isTaken(state.date,state.slot)){state.slot=null;update();refreshLink&&refreshLink();}
+          renderSlots();}
+      }).catch(function(){});
+    }catch(e){}
+  }
+
   function renderSlots(){
     slotsEl.innerHTML="";
     if(!state.date){hint.hidden=false;return;}
     SLOTS.forEach(function(s,idx){
-      var L=slotLabel(s), passed=slotPassed(state.date,s), b=document.createElement("button");
+      var L=slotLabel(s), passed=slotPassed(state.date,s), full=!passed&&isTaken(state.date,s), b=document.createElement("button");
       b.type="button"; b.className="slot"; b.id="slot-"+idx; b.setAttribute("aria-pressed","false");
-      b.innerHTML=L.time+'<small>'+L.part+'</small>';
-      b.setAttribute("aria-label",L.time+" "+L.part+(passed?" (dah lepas)":""));
-      if(passed) b.disabled=true;
+      if(full) b.className+=" full";
+      b.innerHTML=L.time+'<small>'+(full?'Penuh':L.part)+'</small>';
+      b.setAttribute("aria-label",L.time+" "+L.part+(passed?" (dah lepas)":(full?" (penuh)":"")));
+      if(passed||full) b.disabled=true;
+      if(state.slot===s&&!b.disabled) b.setAttribute("aria-pressed","true");
       b.addEventListener("click",function(){
         Array.prototype.forEach.call(slotsEl.children,function(x){x.setAttribute("aria-pressed","false");});
         b.setAttribute("aria-pressed","true"); state.slot=s; clearErr("f-slot"); update();
@@ -744,6 +764,7 @@ input:focus,textarea:focus{outline:none;border-bottom-color:var(--gold);backgrou
     hint.hidden=true;
   }
   renderSlots();
+  fetchTaken(true);
 
   /* Progress meter + reference number */
   var meterBars=document.querySelectorAll("#meter i"), meterN=document.getElementById("meterN"), meterTxt=document.getElementById("meterTxt"), refNo=document.getElementById("refNo");
@@ -800,6 +821,12 @@ input:focus,textarea:focus{outline:none;border-bottom-color:var(--gold);backgrou
     var firstBad=validate();
     if(firstBad){ e.preventDefault(); document.getElementById(firstBad).scrollIntoView({block:"center",behavior:"smooth"}); return; }
     try{localStorage.setItem(SAVE_KEY,JSON.stringify({nama:val("nama"),tel:val("tel"),kereta:val("kereta"),plat:val("plat").toUpperCase()}));}catch(err){}
+    if(SHEET_URL){
+      var payload={ref:refNo.textContent,date:dkey(state.date),slot:state.slot,nama:val("nama"),tel:val("tel"),kereta:val("kereta"),plat:val("plat").toUpperCase(),
+        masalah:Array.prototype.map.call(document.querySelectorAll(".chip input:checked"),function(c){return c.value;}),catatan:val("catatan"),hp:val("hp_web")};
+      try{fetch(SHEET_URL,{method:"POST",mode:"no-cors",keepalive:true,headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(payload)}).catch(function(){});}catch(err){}
+      (taken[payload.date]=taken[payload.date]||[]).push(payload.slot);
+    }
     document.getElementById("copied").textContent="";
     document.getElementById("msgPreview").hidden=true;
     sentNote.hidden=false;
