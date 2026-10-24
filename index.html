@@ -793,7 +793,9 @@ input:focus,textarea:focus{outline:none;border-bottom-color:var(--gold);backgrou
   function buildMsg(){
     var nama=val("nama"), tel=val("tel"), kereta=val("kereta"), plat=val("plat").toUpperCase(), cat=val("catatan");
     var masalah=Array.prototype.map.call(document.querySelectorAll(".chip input:checked"),function(c){return c.value;});
-    var lines=["Salam DR EKON, saya nak booking servis aircond.","","Nama: "+nama,"No. Tel: "+tel,"Kereta: "+kereta];
+    var lines=["Salam DR EKON, saya nak booking servis aircond."];
+    if(state.date&&state.slot) lines.push("No. Rujukan: "+refNo.textContent);
+    lines.push("","Nama: "+nama,"No. Tel: "+tel,"Kereta: "+kereta);
     if(plat) lines.push("No. Plat: "+plat);
     lines.push("Masalah: "+masalah.join(", "));
     if(state.date) lines.push("Tarikh: "+HARI[state.date.getDay()]+", "+state.date.getDate()+" "+BULAN[state.date.getMonth()]+" "+state.date.getFullYear());
