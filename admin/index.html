@@ -264,7 +264,7 @@
 
   /* ---------- kiraan ---------- */
   function compute(){
-    var B = D.bookings, t = D.today, tm = addDays(t, 1), d14 = addDays(t, -14), month = t.slice(0,7);
+    var B = D.bookings, t = D.today, tm = addDays(t, 1), d30 = addDays(t, -30), month = t.slice(0,7);
     var dupCount = {};
     B.forEach(function(b){ if(active(b) && b.date >= t){ var k = telKey(b.tel) + '|' + b.date; dupCount[k] = (dupCount[k] || 0) + 1; } });
     B.forEach(function(b){ b.dup = active(b) && b.date >= t && dupCount[telKey(b.tel) + '|' + b.date] > 1; });
@@ -273,7 +273,7 @@
       dup:     B.filter(function(b){ return b.dup; }).sort(bySlot),
       sahkan:  B.filter(function(b){ return b.status === 'Baru' && b.date >= t && !b.dup; }).sort(bySlot),
       remind:  B.filter(function(b){ return b.date === tm && (b.status === 'Baru' || b.status === 'Disahkan') && !b.rem; }).sort(bySlot),
-      review:  D.reviewUrl ? B.filter(function(b){ return b.status === 'Siap' && !b.rev && b.date >= d14; }).sort(bySlot) : [],
+      review:  D.reviewUrl ? B.filter(function(b){ return b.status === 'Siap' && !b.rev && b.date >= d30; }).sort(bySlot) : [],
       lapuk:   B.filter(function(b){ return b.date && b.date < t && ['Baru','Disahkan','Dalam servis'].indexOf(b.status) > -1; }).sort(bySlot).reverse()
     };
     var uniq = {};
@@ -378,7 +378,7 @@
     if (F.dup.length) fh += sec('Booking berganda', F.dup.length, 'Customer sama, hari sama. Biasanya tertekan butang dua kali. Kekalkan satu, tukar yang lain kepada "Batal" supaya slot terbuka semula.') + F.dup.map(function(b){ return card(b, {showDate:1}); }).join('');
     if (F.sahkan.length) fh += sec('Belum disahkan', F.sahkan.length, 'Tekan "Sahkan &amp; WhatsApp" — status terus tukar jadi Disahkan dan mesej pengesahan siap ditaip.') + F.sahkan.map(function(b){ return card(b, {showDate:1}); }).join('');
     if (F.remind.length) fh += sec('Reminder untuk esok', F.remind.length, 'Hantar peringatan supaya customer tak lupa datang.') + F.remind.map(function(b){ return card(b, {showDate:1}); }).join('');
-    if (F.review.length) fh += sec('Minta review Google', F.review.length, 'Servis dah siap dalam 14 hari lepas.') + F.review.map(function(b){ return card(b, {showDate:1}); }).join('');
+    if (F.review.length) fh += sec('Minta review Google', F.review.length, 'Servis dah siap dalam 30 hari lepas. Lepas tekan butang, customer keluar dari senarai ni.') + F.review.map(function(b){ return card(b, {showDate:1}); }).join('');
     if (F.lapuk.length) fh += sec('Status belum dikemaskini', F.lapuk.length, 'Tarikh dah lepas tapi status belum Siap / Tak datang. Kemaskini supaya rekod dan laporan bulanan tepat.') + F.lapuk.map(function(b){ return card(b, {showDate:1}); }).join('');
     if (!D.reviewUrl) fh += '<p class="hint" style="margin-top:20px">ℹ Butang "Minta Review Google" akan muncul bila link review diisi dalam tetapan.</p>';
     $('v-follow').innerHTML = fh || sec('Follow Up', 0) + '<div class="empty">Semua beres 👍 Tiada yang perlu di-follow up.</div>';
