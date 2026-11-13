@@ -187,6 +187,10 @@
   .hl:last-of-type{border-bottom:0}
   .hl .hm{color:var(--mut);font-size:12px;margin-top:2px}
 
+  .dlrow{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+  .dlbtn{display:flex;align-items:center;justify-content:center;gap:7px;background:var(--card);border:1.5px solid rgba(255,198,26,.45);color:var(--gold);
+    border-radius:12px;padding:11px 8px;font-size:13px;font-weight:800;cursor:pointer}
+  .dlbtn svg{width:16px;height:16px;flex:none}
   /* ---------- REPORT ---------- */
   .rgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
   @media(min-width:640px){.rgrid{grid-template-columns:repeat(4,1fr)}}
@@ -257,7 +261,10 @@
       <section id="v-today"></section>
       <section id="v-next" hidden></section>
       <section id="v-follow" hidden></section>
-      <section id="v-cust" hidden><input class="search" id="q" placeholder="Cari nama, telefon atau no. plat"><div id="custList"></div></section>
+      <section id="v-cust" hidden><input class="search" id="q" placeholder="Cari nama, telefon atau no. plat">
+        <div class="dlrow"><button class="dlbtn" data-dl="cust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Senarai Customer</button>
+        <button class="dlbtn" data-dl="book"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>Semua Booking</button></div>
+        <div id="custList"></div></section>
       <section id="v-rep" hidden></section>
     </main>
     <aside id="panel"><div class="panelbox" id="panelBox"><div class="pempty">Pilih booking untuk lihat butiran,<br>tukar status dan hantar WhatsApp.</div></div></aside>
@@ -575,6 +582,44 @@
     window.scrollTo(0, 0);
   }
 
+  /* ---------- download CSV ---------- */
+  function custRows(){
+    var map = {};
+    D.bookings.forEach(function(b){ var k = telKey(b.tel); if (!k) return; (map[k] = map[k] || []).push(b); });
+    return Object.keys(map).map(function(k){
+      var l = map[k].slice().sort(bySlot), last = l[l.length-1], act = l.filter(active);
+      var cars = l.map(function(b){ return b.kereta + (b.plat ? ' (' + b.plat + ')' : ''); }).filter(function(v, i, a){ return a.indexOf(v) === i; }).join('; ');
+      var mas = {}; l.forEach(function(b){ String(b.masalah||'').split(',').forEach(function(s){ s = s.trim(); if (s) mas[s] = 1; }); });
+      return { last: last.date, r: [first(last.nama), last.tel, cars, l.length, l.filter(function(b){ return b.status === 'Siap'; }).length,
+        l.filter(function(b){ return b.status === 'Batal' || b.status === 'Tak datang'; }).length, l[0].date, (act.length ? act[act.length-1] : last).date,
+        Object.keys(mas).join('; '), l.some(function(b){ return b.rev; }) ? 'Ya' : 'Belum'] };
+    }).sort(function(a, b){ return b.last.localeCompare(a.last); }).map(function(x){ return x.r; });
+  }
+  function csvCell(v, tel){ v = String(v == null ? '' : v); if (tel) return '="' + v.replace(/"/g,'') + '"'; return /[",\n;]/.test(v) ? '"' + v.replace(/"/g,'""') + '"' : v; }
+  function download(kind){
+    var head, rows, telCol;
+    if (kind === 'cust') {
+      head = ['Nama','No. Telefon','Kereta (No. Plat)','Jumlah Booking','Siap','Batal / Tak Datang','Booking Pertama','Booking Terakhir','Masalah Pernah','Review Diminta'];
+      rows = custRows(); telCol = 1;
+    } else {
+      head = ['No. Rujukan','Tarikh Servis','Slot','Nama','No. Telefon','Kereta','No. Plat','Masalah','Catatan Pelanggan','Status','Nota Kerani','Reminder Dihantar','Review Diminta'];
+      rows = D.bookings.slice().sort(bySlot).reverse().map(function(b){ return [b.ref, b.date, b.slot, first(b.nama), b.tel, b.kereta, b.plat, b.masalah, b.catatan, b.status, b.nota, b.rem, b.rev]; });
+      telCol = 4;
+    }
+    var csv = '\ufeff' + [head.join(',')].concat(rows.map(function(r){ return r.map(function(v, i){ return csvCell(v, i === telCol); }).join(','); })).join('\r\n');
+    var name = (D.business.split(' ').slice(0,2).join('-') + '_' + (kind === 'cust' ? 'Customer' : 'Booking') + '_' + D.today + '.csv').replace(/\s+/g,'-');
+    var blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+    try {
+      if (navigator.canShare && navigator.share && /iPhone|iPad/.test(navigator.userAgent)) {
+        var f = new File([blob], name, { type: 'text/csv' });
+        if (navigator.canShare({ files: [f] })) { navigator.share({ files: [f], title: name }).catch(function(){}); return; }
+      }
+    } catch(e){}
+    var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+    document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+    toast((kind === 'cust' ? rows.length + ' customer' : rows.length + ' booking') + ' dimuat turun');
+  }
+
   /* ---------- data ---------- */
   function skeleton(){ $('kpis').innerHTML = [1,2,3,4].map(function(){ return '<div class="sk" style="height:112px"></div>'; }).join(''); $('v-today').innerHTML = '<div class="sk" style="height:20px;width:40%;margin:24px 0 12px"></div>' + [1,2,3].map(function(){ return '<div class="sk" style="height:110px;margin-bottom:10px"></div>'; }).join(''); }
   function refresh(quiet){
@@ -617,6 +662,7 @@
     if ((el = e.target.closest('[data-day]'))) { e.preventDefault(); DAYF = el.dataset.day ? (DAYF === el.dataset.day ? null : el.dataset.day) : null; return renderNext(compute()); }
     if ((el = e.target.closest('[data-rm]'))) { var t = D.today, m = REPM || t.slice(0,7), y = +m.slice(0,4), mo = +m.slice(5) + Number(el.dataset.rm);
       if (mo < 1) { mo = 12; y--; } if (mo > 12) { mo = 1; y++; } var nm = y + '-' + ('0' + mo).slice(-2); if (nm > t.slice(0,7)) return; REPM = nm; return renderRep(); }
+    if ((el = e.target.closest('[data-dl]'))) return download(el.dataset.dl);
     if ((el = e.target.closest('[data-savenote]'))) { var b0 = find(el.dataset.savenote), v = $('nt' + b0.row).value; return update(b0, { nota: v }, 'Nota disimpan'); }
     if ((el = e.target.closest('[data-set]'))) { var b1 = find(el.dataset.row), s = el.dataset.set; if (b1.status !== s) update(b1, { status: s }, 'Status: ' + s); return; }
     if ((el = e.target.closest('a[data-act]'))) {   // biar WhatsApp terbuka, kemaskini Sheet di belakang
