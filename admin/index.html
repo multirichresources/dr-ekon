@@ -17,207 +17,295 @@
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root{
-    --bg:#0A0A0A; --card:#151515; --card2:#1D1D1D; --line:#2A2A2A;
-    --gold:#FFC61A; --txt:#F4F4F4; --mut:#9A9A9A; --wa:#22C063; --red:#FF6B6B;
+    --bg:#0A0A0A; --bg2:#0F0F0F; --card:#151515; --card2:#1C1C1C; --line:#262626; --line2:#333;
+    --gold:#FFC61A; --gold2:#FFD966; --txt:#F4F4F4; --mut:#9A9A9A; --mut2:#6E6E6E;
+    --wa:#22C063; --red:#FF6B6B; --blue:#6EA8FF; --orange:#FF9F5A; --green:#4ADE80;
+    --r:18px;
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:var(--bg);color:var(--txt);font-family:'Plus Jakarta Sans',system-ui,-apple-system,sans-serif;-webkit-font-smoothing:antialiased}
-  body{min-height:100vh;padding-bottom:96px}
+  body{min-height:100vh;padding-bottom:calc(84px + env(safe-area-inset-bottom))}
   button,select,input,textarea{font:inherit;color:inherit}
   a{color:inherit;text-decoration:none}
-  .wrap{max-width:760px;margin:0 auto;padding:0 16px}
+  [hidden]{display:none!important}
 
-  /* login */
+  /* ---------- LOGIN ---------- */
   #login{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;
-    background:radial-gradient(600px 300px at 50% 20%,rgba(255,198,26,.12),transparent 70%)}
+    background:radial-gradient(600px 320px at 50% 18%,rgba(255,198,26,.14),transparent 70%)}
   .lbox{width:100%;max-width:360px;text-align:center}
-  .logo{font-size:34px;font-weight:800;font-style:italic;color:var(--gold);letter-spacing:-.5px}
-  .lsub{color:var(--mut);font-size:13px;letter-spacing:3px;text-transform:uppercase;margin:6px 0 32px}
-  .pin{width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px;
-    font-size:28px;text-align:center;letter-spacing:12px;outline:none}
+  .lbox img{width:84px;height:84px;border-radius:22px;box-shadow:0 18px 40px rgba(255,198,26,.18)}
+  .lt{font-size:13px;letter-spacing:3px;text-transform:uppercase;color:var(--mut);margin:18px 0 28px}
+  .pin{width:100%;background:var(--card);border:1.5px solid var(--line2);border-radius:16px;padding:18px;font-size:28px;
+    text-align:center;letter-spacing:12px;outline:none}
   .pin:focus{border-color:var(--gold)}
-  .btn-gold{width:100%;margin-top:14px;background:var(--gold);color:#0A0A0A;border:0;border-radius:16px;
-    padding:17px;font-size:17px;font-weight:800;cursor:pointer}
+  .btn-gold{width:100%;margin-top:14px;background:var(--gold);color:#0A0A0A;border:0;border-radius:16px;padding:17px;
+    font-size:17px;font-weight:800;cursor:pointer}
   .err{color:var(--red);font-size:14px;margin-top:14px;min-height:20px}
 
-  /* header */
-  header{position:sticky;top:0;z-index:20;background:rgba(10,10,10,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
-  .hd{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;max-width:760px;margin:0 auto}
-  .hd .t1{font-weight:800;font-style:italic;color:var(--gold);font-size:20px}
-  .hd .t2{color:var(--mut);font-size:12px;margin-top:2px}
-  .icon-btn{background:var(--card);border:1px solid var(--line);border-radius:12px;width:44px;height:44px;
-    display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px}
-  .spin{animation:sp 1s linear infinite}
-  @keyframes sp{to{transform:rotate(360deg)}}
+  /* ---------- SHELL ---------- */
+  header{position:sticky;top:0;z-index:20;background:rgba(10,10,10,.88);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line)}
+  .hd{display:flex;align-items:center;gap:12px;padding:12px 16px;max-width:1200px;margin:0 auto}
+  .hd img{width:40px;height:40px;border-radius:11px}
+  .hd .who{flex:1;min-width:0}
+  .hd .hi{font-weight:800;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .hd .dt{color:var(--mut);font-size:12.5px;margin-top:2px;display:flex;align-items:center;gap:8px}
+  .ostat{display:inline-flex;align-items:center;gap:6px;font-weight:700;font-size:11.5px;padding:3px 9px;border-radius:999px}
+  .ostat i{width:7px;height:7px;border-radius:50%}
+  .ostat.on{background:rgba(74,222,128,.12);color:var(--green)}.ostat.on i{background:var(--green);box-shadow:0 0 0 3px rgba(74,222,128,.2)}
+  .ostat.off{background:rgba(255,107,107,.12);color:var(--red)}.ostat.off i{background:var(--red)}
+  .ib{width:42px;height:42px;flex:none;border-radius:12px;background:var(--card);border:1px solid var(--line);display:flex;
+    align-items:center;justify-content:center;cursor:pointer}
+  .ib svg{width:19px;height:19px}
+  .spin svg{animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+  #ptr{height:0;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:13px;transition:height .2s}
 
-  /* stats */
-  .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:18px 0 8px}
-  @media(min-width:640px){.stats{grid-template-columns:repeat(4,1fr)}}
-  .stat{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;cursor:pointer}
-  .stat .n{font-size:30px;font-weight:800;line-height:1}
-  .stat .l{color:var(--mut);font-size:13px;margin-top:8px}
-  .stat.hot{border-color:rgba(255,198,26,.5);background:linear-gradient(180deg,rgba(255,198,26,.10),var(--card))}
-  .stat.hot .n{color:var(--gold)}
+  .layout{max-width:1200px;margin:0 auto;padding:0 16px}
+  @media(min-width:1000px){
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:24px;align-items:start}
+    #panel{position:sticky;top:84px;margin-top:20px}
+  }
+  #panel{display:none}
+  @media(min-width:1000px){#panel{display:block}}
 
-  /* sections */
-  h2.sec{font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:26px 0 12px;
-    display:flex;align-items:center;gap:8px}
-  h2.sec .c{background:var(--card2);color:var(--txt);border-radius:999px;padding:2px 9px;font-size:12px;letter-spacing:0}
+  /* ---------- KPI ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0 4px}
+  @media(min-width:640px){.kpis{grid-template-columns:repeat(4,1fr)}}
+  .kpi{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px 14px 13px;cursor:pointer;position:relative;overflow:hidden}
+  .kpi .top{display:flex;align-items:center;justify-content:space-between}
+  .kpi .ic{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;background:var(--card2)}
+  .kpi .ic svg{width:16px;height:16px}
+  .kpi .n{font-size:30px;font-weight:800;line-height:1;margin-top:12px;letter-spacing:-.5px}
+  .kpi .l{color:var(--mut);font-size:12.5px;margin-top:6px}
+  .kpi .d{font-size:11.5px;font-weight:700;margin-top:6px}
+  .up{color:var(--green)}.dn{color:var(--red)}.eq{color:var(--mut2)}
+  .kpi.hot{border-color:rgba(255,198,26,.45);background:linear-gradient(170deg,rgba(255,198,26,.12),var(--card) 60%)}
+  .kpi.hot .n{color:var(--gold)}
+  .cap{height:6px;border-radius:99px;background:var(--card2);margin-top:9px;overflow:hidden}
+  .cap i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+
+  /* ---------- SECTIONS ---------- */
+  h2.sec{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin:24px 0 12px;display:flex;align-items:center;gap:8px}
+  h2.sec .c{background:var(--card2);color:var(--txt);border-radius:999px;padding:2px 9px;font-size:11.5px;letter-spacing:0}
+  h2.sec .r{margin-left:auto;color:var(--mut);letter-spacing:0;text-transform:none;font-weight:600;font-size:12.5px}
   .hint{color:var(--mut);font-size:13px;margin:-4px 0 12px;line-height:1.5}
-  .empty{background:var(--card);border:1px dashed var(--line);border-radius:18px;padding:28px 18px;text-align:center;color:var(--mut);font-size:15px}
+  .empty{background:var(--card);border:1px dashed var(--line2);border-radius:var(--r);padding:26px 18px;text-align:center;color:var(--mut);font-size:14.5px}
 
-  /* booking card */
-  .card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:12px}
-  .card.dup{border-color:rgba(255,107,107,.5)}
-  .top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-  .time{font-size:22px;font-weight:800}
-  .time small{display:block;font-size:13px;color:var(--mut);font-weight:600;margin-top:3px}
-  .pill{border-radius:999px;padding:6px 12px;font-size:12px;font-weight:800;white-space:nowrap}
-  .s-Baru{background:#FFF3C4;color:#7A5A00}
-  .s-Disahkan{background:#DCEBFF;color:#0B3D91}
-  .s-Dalam{background:#FFE0CC;color:#8A3B00}
-  .s-Siap{background:#D6F5E0;color:#0B6B2E}
-  .s-Batal{background:#3A3A3A;color:#BBB}
-  .s-Tak{background:#FAD4D4;color:#9B1C1C}
-  .nm{font-size:18px;font-weight:700;margin-top:14px;text-transform:capitalize}
-  .car{color:var(--mut);font-size:14px;margin-top:4px}
-  .car b{color:var(--txt);font-weight:700;letter-spacing:.5px}
-  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
-  .chip{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:5px 11px;font-size:12px}
-  .note{background:var(--card2);border-left:3px solid var(--line);border-radius:10px;padding:10px 12px;font-size:14px;
-    color:#D6D6D6;margin-top:12px;line-height:1.5}
-  .note.k{border-left-color:var(--gold)}
-  .note.w{border-left-color:var(--red);color:#FFC9C9}
-  .meta{font-size:12px;color:var(--mut);margin-top:10px}
-  .meta span{color:var(--wa)}
-  .row2{display:flex;gap:8px;margin-top:14px}
-  select.st{flex:1;background:var(--card2);border:1.5px solid var(--line);border-radius:14px;padding:13px 12px;
-    font-size:15px;font-weight:700;appearance:none;-webkit-appearance:none;cursor:pointer;
-    background-image:linear-gradient(45deg,transparent 50%,var(--gold) 50%),linear-gradient(135deg,var(--gold) 50%,transparent 50%);
-    background-position:calc(100% - 20px) 50%,calc(100% - 14px) 50%;background-size:6px 6px;background-repeat:no-repeat}
-  .sq{width:50px;flex:none;background:var(--card2);border:1.5px solid var(--line);border-radius:14px;display:flex;
-    align-items:center;justify-content:center;font-size:18px;cursor:pointer}
-  .acts{display:grid;gap:8px;margin-top:8px}
-  .wa{display:flex;align-items:center;justify-content:center;gap:8px;background:var(--wa);color:#fff;border-radius:14px;
-    padding:14px;font-weight:800;font-size:15px;cursor:pointer;border:0}
-  .wa.ghost{background:transparent;border:1.5px solid rgba(34,192,99,.55);color:#5BE08F}
-  .wa.done{background:transparent;border:1.5px solid var(--line);color:var(--mut)}
-  .nedit{margin-top:10px;display:none}
-  .nedit.on{display:block}
-  .nedit textarea{width:100%;background:var(--card2);border:1.5px solid var(--line);border-radius:12px;padding:12px;
-    font-size:15px;min-height:80px;resize:vertical;outline:none}
+  /* ---------- TIMELINE ---------- */
+  .tl{position:relative}
+  .slot{display:grid;grid-template-columns:62px minmax(0,1fr);gap:12px;position:relative}
+  .slot .tm{padding-top:15px;text-align:right}
+  .slot .tm b{display:block;font-size:15px;font-weight:800}
+  .slot .tm small{color:var(--mut2);font-size:11px;font-weight:600}
+  .slot .col{border-left:2px solid var(--line);padding:0 0 12px 14px;position:relative;min-width:0}
+  .slot .col:before{content:"";position:absolute;left:-6px;top:20px;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--line2)}
+  .slot.has .col:before{border-color:var(--gold);background:var(--gold)}
+  .slot.past .tm{opacity:.55}
+  .free{border:1.5px dashed var(--line2);border-radius:14px;padding:13px 14px;color:var(--mut2);font-size:13.5px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+  .free span{color:var(--green);font-size:12px}
+  .nowline{position:absolute;left:62px;right:0;height:0;border-top:2px solid var(--red);z-index:3;pointer-events:none}
+  .nowline:before{content:"";position:absolute;left:-5px;top:-6px;width:10px;height:10px;border-radius:50%;background:var(--red)}
+  .nowline span{position:absolute;right:0;top:-11px;background:var(--red);color:#fff;font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:999px}
+
+  /* ---------- BOOKING CARD ---------- */
+  .bk{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line2);border-radius:16px;padding:14px;margin-bottom:10px;
+    transition:border-color .2s,transform .15s;cursor:pointer}
+  .bk:active{transform:scale(.995)}
+  .bk.sel{outline:2px solid rgba(255,198,26,.6);outline-offset:1px}
+  .bk.st-Baru{border-left-color:var(--gold)}.bk.st-Disahkan{border-left-color:var(--blue)}
+  .bk.st-Dalam{border-left-color:var(--orange)}.bk.st-Siap{border-left-color:var(--green)}
+  .bk.st-Batal,.bk.st-Tak{border-left-color:#555;opacity:.6}
+  .bk.dup{box-shadow:0 0 0 1px rgba(255,107,107,.5)}
+  .row1{display:flex;gap:12px;align-items:center}
+  .av{width:42px;height:42px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;color:#0A0A0A}
+  .who2{flex:1;min-width:0}
+  .who2 b{display:block;font-size:15.5px;text-transform:capitalize;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .who2 span{display:block;color:var(--mut);font-size:13px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .who2 span em{font-style:normal;color:var(--txt);font-weight:700;letter-spacing:.4px}
+  .pill{border-radius:999px;padding:5px 10px;font-size:11.5px;font-weight:800;white-space:nowrap}
+  .p-Baru{background:#FFF3C4;color:#7A5A00}.p-Disahkan{background:#DCEBFF;color:#0B3D91}.p-Dalam{background:#FFE0CC;color:#8A3B00}
+  .p-Siap{background:#D6F5E0;color:#0B6B2E}.p-Batal{background:#3A3A3A;color:#BBB}.p-Tak{background:#FAD4D4;color:#9B1C1C}
+  .when{font-size:12px;color:var(--mut);margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
+  .when b{color:var(--txt)}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .chip{background:var(--card2);border:1px solid var(--line);border-radius:999px;padding:4px 10px;font-size:12px}
+  .warn{margin-top:10px;font-size:12.5px;color:#FFC9C9;background:rgba(255,107,107,.08);border:1px solid rgba(255,107,107,.3);border-radius:10px;padding:8px 10px;line-height:1.45}
+  .next{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin-top:12px;border:0;border-radius:12px;padding:12px;
+    font-weight:800;font-size:14.5px;cursor:pointer}
+  .n-wa{background:var(--wa);color:#fff}.n-blue{background:var(--blue);color:#06204A}.n-orange{background:var(--orange);color:#3A1600}
+  .n-ghost{background:transparent;border:1.5px solid rgba(34,192,99,.55);color:#5BE08F}
+  .n-done{background:transparent;border:1.5px solid var(--line2);color:var(--mut);font-weight:700}
+  .next svg{width:18px;height:18px;flex:none}
+  main{min-width:0}
+  .bk,.cust{min-width:0;overflow:hidden}
+  .more{margin-top:12px;border-top:1px solid var(--line);padding-top:12px;display:none}
+  .bk.open .more{display:block}
+  @media(min-width:1000px){.bk.open .more{display:none}}
+
+  /* ---------- DETAIL (shared by inline + panel) ---------- */
+  .dl{display:grid;grid-template-columns:96px 1fr;gap:8px 10px;font-size:13.5px}
+  .dl dt{color:var(--mut)}.dl dd{word-break:break-word}
+  .q{margin-top:10px;background:var(--card2);border-radius:10px;padding:10px 12px;font-size:13.5px;color:#D6D6D6;line-height:1.5}
+  .acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+  .act{display:flex;flex-direction:column;align-items:center;gap:5px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 4px;
+    font-size:11.5px;font-weight:700;color:#DADADA;cursor:pointer}
+  .act svg{width:18px;height:18px}
+  .stlbl{font-size:11.5px;color:var(--mut);margin:14px 0 8px;letter-spacing:1px;text-transform:uppercase;font-weight:700}
+  .stset{display:flex;flex-wrap:wrap;gap:6px}
+  .stset button{border:1px solid var(--line2);background:transparent;border-radius:999px;padding:7px 11px;font-size:12.5px;font-weight:700;cursor:pointer;color:#CFCFCF}
+  .stset button.on{background:var(--gold);border-color:var(--gold);color:#0A0A0A}
+  .nedit textarea{width:100%;margin-top:6px;background:var(--card2);border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;min-height:70px;resize:vertical;outline:none}
   .nedit textarea:focus{border-color:var(--gold)}
-  .nedit button{margin-top:8px;background:var(--gold);color:#0A0A0A;border:0;border-radius:12px;padding:12px 18px;font-weight:800;cursor:pointer}
+  .nedit button{margin-top:8px;background:var(--gold);color:#0A0A0A;border:0;border-radius:10px;padding:10px 16px;font-weight:800;cursor:pointer}
+  .panelbox{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px}
+  .panelbox .ph{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+  .panelbox .ph .av{width:52px;height:52px;font-size:18px}
+  .panelbox .ph b{font-size:18px;text-transform:capitalize}
+  .panelbox .ph span{display:block;color:var(--mut);font-size:13px;margin-top:2px}
+  .pempty{color:var(--mut);text-align:center;padding:40px 10px;font-size:14px;line-height:1.6}
 
-  /* date group */
-  .dg{display:flex;align-items:baseline;justify-content:space-between;margin:22px 0 10px;padding-bottom:8px;border-bottom:1px solid var(--line)}
-  .dg b{font-size:16px}
-  .dg span{color:var(--mut);font-size:13px}
+  /* ---------- 7-DAY STRIP ---------- */
+  .strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:14px 0 4px}
+  .day{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:9px 2px;text-align:center;cursor:pointer}
+  .day small{display:block;font-size:10.5px;color:var(--mut);font-weight:700;text-transform:uppercase}
+  .day b{display:block;font-size:17px;font-weight:800;margin-top:2px}
+  .day i{display:block;font-style:normal;font-size:11px;margin-top:4px;color:var(--gold);font-weight:800}
+  .day.off{opacity:.4}
+  .day.on{background:var(--gold);border-color:var(--gold);color:#0A0A0A}.day.on small,.day.on i{color:#0A0A0A}
 
-  /* customer */
-  .search{width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:15px 16px;
-    font-size:16px;outline:none;margin-top:18px}
+  /* ---------- CUSTOMER ---------- */
+  .search{width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:13px 14px 13px 42px;font-size:15px;outline:none;margin-top:16px;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' fill='none' stroke='%239A9A9A' stroke-width='2' viewBox='0 0 24 24'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='m20 20-3.5-3.5'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:14px 50%}
   .search:focus{border-color:var(--gold)}
-  .cust{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-bottom:10px;cursor:pointer}
-  .cust .r1{display:flex;justify-content:space-between;gap:10px;align-items:center}
-  .cust .cn{font-weight:700;font-size:16px;text-transform:capitalize}
-  .cust .cc{background:var(--card2);border-radius:999px;padding:4px 10px;font-size:12px;color:var(--gold);font-weight:700;white-space:nowrap}
-  .cust .cs{color:var(--mut);font-size:13px;margin-top:5px}
-  .hist{display:none;margin-top:12px;border-top:1px solid var(--line);padding-top:10px}
+  .cust{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer}
+  .cust .r1{display:flex;gap:12px;align-items:center}
+  .cc{background:var(--card2);border-radius:999px;padding:4px 10px;font-size:11.5px;color:var(--gold);font-weight:800;white-space:nowrap}
+  .hist{display:none;margin-top:12px;border-top:1px solid var(--line);padding-top:8px}
   .cust.open .hist{display:block}
-  .hl{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:7px 0;border-bottom:1px solid #202020}
-  .hl:last-child{border-bottom:0}
-  .hl .hm{color:var(--mut)}
-  .cact{display:flex;gap:8px;margin-top:10px}
-  .cact a{flex:1}
+  .hl{display:flex;justify-content:space-between;gap:10px;font-size:13px;padding:8px 0;border-bottom:1px solid #1F1F1F;align-items:center}
+  .hl:last-of-type{border-bottom:0}
+  .hl .hm{color:var(--mut);font-size:12px;margin-top:2px}
 
-  /* bottom nav */
-  nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(14,14,14,.96);backdrop-filter:blur(12px);
+  /* ---------- REPORT ---------- */
+  .rgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+  @media(min-width:640px){.rgrid{grid-template-columns:repeat(4,1fr)}}
+  .rc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+  .rc .n{font-size:26px;font-weight:800}.rc .l{color:var(--mut);font-size:12.5px;margin-top:4px}
+  .rc .s{font-size:11.5px;margin-top:6px;font-weight:700}
+  .box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px;margin-top:10px}
+  .box h3{font-size:14px;margin-bottom:12px}
+  .bar{display:grid;grid-template-columns:110px 1fr 44px;gap:10px;align-items:center;font-size:13px;margin-bottom:9px}
+  .bar .t{height:10px;background:var(--card2);border-radius:99px;overflow:hidden}
+  .bar .t i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold2))}
+  .bar .v{text-align:right;color:var(--mut);font-weight:700}
+  .cols{display:flex;align-items:flex-end;gap:8px;height:120px;padding-top:8px}
+  .cols div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+  .cols i{display:block;width:100%;max-width:34px;border-radius:8px 8px 3px 3px;background:var(--card2)}
+  .cols i.top{background:linear-gradient(180deg,var(--gold2),var(--gold))}
+  .cols small{font-size:11px;color:var(--mut);font-weight:700}
+  .cols b{font-size:11.5px}
+  .mnav{display:flex;align-items:center;gap:10px;margin-top:16px}
+  .mnav button{width:38px;height:38px;border-radius:10px;background:var(--card);border:1px solid var(--line);cursor:pointer;font-size:16px}
+  .mnav b{flex:1;text-align:center;font-size:15px}
+
+  /* ---------- NAV ---------- */
+  nav{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(12,12,12,.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
     border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-  .nv{max-width:760px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr)}
-  .nv button{background:none;border:0;padding:11px 4px 12px;cursor:pointer;color:var(--mut);font-size:11.5px;font-weight:700;
+  .nv{max-width:640px;margin:0 auto;display:grid;grid-template-columns:repeat(5,1fr)}
+  .nv button{background:none;border:0;padding:10px 2px 11px;cursor:pointer;color:var(--mut2);font-size:10.5px;font-weight:700;
     display:flex;flex-direction:column;align-items:center;gap:4px;position:relative}
-  .nv button .i{font-size:20px;line-height:1}
+  .nv svg{width:21px;height:21px}
   .nv button.on{color:var(--gold)}
-  .nv .bd{position:absolute;top:6px;left:calc(50% + 8px);background:var(--red);color:#fff;border-radius:999px;
-    font-size:10.5px;padding:1px 6px;min-width:18px}
+  .nv .bd{position:absolute;top:5px;left:calc(50% + 7px);background:var(--red);color:#fff;border-radius:999px;font-size:10px;padding:1px 5px;min-width:17px}
 
-  .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%) translateY(20px);background:#FFF;color:#0A0A0A;
-    padding:12px 18px;border-radius:12px;font-weight:700;font-size:14px;opacity:0;transition:.25s;z-index:50;
-    max-width:90vw;text-align:center;pointer-events:none}
+  /* ---------- MISC ---------- */
+  .toast{position:fixed;left:50%;bottom:96px;transform:translateX(-50%) translateY(16px);background:#FFF;color:#0A0A0A;padding:11px 16px;border-radius:12px;
+    font-weight:700;font-size:13.5px;opacity:0;transition:.25s;z-index:50;max-width:90vw;text-align:center;pointer-events:none}
   .toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
   .toast.bad{background:var(--red);color:#fff}
-  .loading{text-align:center;color:var(--mut);padding:60px 0}
-  [hidden]{display:none!important}
+  .sk{background:linear-gradient(90deg,var(--card) 0%,var(--card2) 50%,var(--card) 100%);background-size:200% 100%;animation:sh 1.2s infinite;border-radius:16px}
+  @keyframes sh{to{background-position:-200% 0}}
+  .fade{animation:fd .25s ease}@keyframes fd{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login">
   <div class="lbox">
-    <div class="logo" id="lLogo">DR EKON</div>
-    <div class="lsub">Dashboard Booking</div>
+    <img src="icons/icon-192-v2.png" alt="DR EKON">
+    <div class="lt">Dashboard Booking</div>
     <input id="pin" class="pin" type="password" inputmode="numeric" autocomplete="off" maxlength="8" placeholder="••••••">
     <button class="btn-gold" id="goBtn">Masuk</button>
     <div class="err" id="lErr"></div>
   </div>
 </div>
 
-<!-- APP -->
 <div id="app" hidden>
   <header>
     <div class="hd">
-      <div>
-        <div class="t1" id="hBiz">DR EKON</div>
-        <div class="t2" id="hDate"></div>
-      </div>
-      <button class="icon-btn" id="refBtn" title="Refresh">⟳</button>
+      <img src="icons/icon-192-v2.png" alt="">
+      <div class="who"><div class="hi" id="hHi">Selamat datang</div><div class="dt"><span id="hDate"></span><span class="ostat" id="hOpen"><i></i><span></span></span></div></div>
+      <button class="ib" id="refBtn" aria-label="Refresh"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 11a8 8 0 1 0-2.3 5.7M20 5v6h-6"/></svg></button>
     </div>
   </header>
+  <div id="ptr">Lepaskan untuk refresh</div>
 
-  <main class="wrap">
-    <div class="stats" id="stats"></div>
-    <section id="v-today"></section>
-    <section id="v-next" hidden></section>
-    <section id="v-follow" hidden></section>
-    <section id="v-cust" hidden>
-      <input class="search" id="q" placeholder="Cari nama, telefon atau no. plat">
-      <div id="custList"></div>
-    </section>
-  </main>
+  <div class="layout">
+    <main>
+      <div class="kpis" id="kpis"></div>
+      <section id="v-today"></section>
+      <section id="v-next" hidden></section>
+      <section id="v-follow" hidden></section>
+      <section id="v-cust" hidden><input class="search" id="q" placeholder="Cari nama, telefon atau no. plat"><div id="custList"></div></section>
+      <section id="v-rep" hidden></section>
+    </main>
+    <aside id="panel"><div class="panelbox" id="panelBox"><div class="pempty">Pilih booking untuk lihat butiran,<br>tukar status dan hantar WhatsApp.</div></div></aside>
+  </div>
 
-  <nav>
-    <div class="nv">
-      <button data-v="today" class="on"><span class="i">◉</span>Hari Ini</button>
-      <button data-v="next"><span class="i">▦</span>Akan Datang</button>
-      <button data-v="follow"><span class="i">⚑</span>Follow Up<span class="bd" id="fBadge" hidden></span></button>
-      <button data-v="cust"><span class="i">☺</span>Customer</button>
-    </div>
-  </nav>
+  <nav><div class="nv">
+    <button data-v="today" class="on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Hari Ini</button>
+    <button data-v="next"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Akan Datang</button>
+    <button data-v="follow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 21V4h11l-2 4 2 4H5"/></svg>Follow Up<span class="bd" id="fBadge" hidden></span></button>
+    <button data-v="cust"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.8-3.6 3.4-5.5 6.5-5.5s5.7 1.9 6.5 5.5M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.8c1.6.8 2.6 2.5 3 5.2"/></svg>Customer</button>
+    <button data-v="rep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Laporan</button>
+  </div></nav>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
 (function(){
-  var PIN = '', D = null, VIEW = 'today', Q = '';
-  var HARI = ['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'];
+  /* ===== Tetapan bengkel ===== */
+  var API = 'https://script.google.com/macros/s/AKfycbwoyuf-7FnNpxcr1gg_WuYJfSH1aVuExQbITBV-enYl7uEYBJ85nB4APsIt4IkKtHNn/exec';
+  var SLOTS = ['09:30','10:30','11:30','12:30','14:30','15:30','16:30'];
+  var OPEN = 9*60+30, CLOSE = 18*60, CLOSED_DAYS = [0];
+  var TZ = 'Asia/Kuala_Lumpur';
+  /* =========================== */
+
+  var PIN = '', D = null, VIEW = 'today', Q = '', DAYF = null, SEL = null, REPM = null;
+  var HARI = ['Ahad','Isnin','Selasa','Rabu','Khamis','Jumaat','Sabtu'], HS = ['Ahd','Isn','Sel','Rab','Kha','Jum','Sab'];
   var BLN = ['Jan','Feb','Mac','Apr','Mei','Jun','Jul','Ogo','Sep','Okt','Nov','Dis'];
   var BULAN = ['Januari','Februari','Mac','April','Mei','Jun','Julai','Ogos','September','Oktober','November','Disember'];
   var INACTIVE = ['Batal','Tak datang'];
+  var AVC = ['#FFC61A','#6EA8FF','#4ADE80','#FF9F5A','#C4A7FF','#5EEAD4','#F9A8D4'];
   var $ = function(id){ return document.getElementById(id); };
+  var IC = {
+    cal:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>',
+    fwd:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>',
+    flag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 21V4h11l-2 4 2 4H5"/></svg>',
+    chart:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>',
+    phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>',
+    wa:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 11.5a8.4 8.4 0 0 1-12.3 7.5L3 21l2-5.5A8.5 8.5 0 1 1 21 11.5z"/></svg>',
+    note:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4"/></svg>'
+  };
 
   /* ---------- server ---------- */
-  var API = 'https://script.google.com/macros/s/AKfycbwoyuf-7FnNpxcr1gg_WuYJfSH1aVuExQbITBV-enYl7uEYBJ85nB4APsIt4IkKtHNn/exec';
   function api(body){
     body.action = 'dash';
-    return fetch(API, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(body) })
+    return fetch(API, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body: JSON.stringify(body) })
       .then(function(r){ return r.json(); }, function(){ throw 'Tiada sambungan internet. Cuba lagi.'; })
       .then(function(j){ if (!j || !j.ok) throw (j && j.error) || 'Ralat server. Cuba lagi.'; return j; });
-  }
-  function call(fn, pin, row, ref, changes){
-    return fn === 'dashData' ? api({ op: 'data', pin: pin }) : api({ op: 'update', pin: pin, row: row, ref: ref, changes: changes });
   }
 
   /* ---------- helpers ---------- */
@@ -226,18 +314,21 @@
   function dObj(iso){ var p = iso.split('-').map(Number); return { y:p[0], m:p[1], d:p[2], w:new Date(Date.UTC(p[0],p[1]-1,p[2])).getUTCDay() }; }
   function dShort(iso){ if(!iso) return '-'; var o = dObj(iso); return HARI[o.w] + ', ' + o.d + ' ' + BLN[o.m-1]; }
   function dLong(iso){ var o = dObj(iso); return HARI[o.w] + ', ' + o.d + ' ' + BULAN[o.m-1] + ' ' + o.y; }
-  function slotLbl(s){ var h = Number(String(s).slice(0,2)), m = String(s).slice(3,5); if(isNaN(h)) return esc(s);
-    return (h > 12 ? h-12 : h) + ':' + m + ' ' + (h < 12 ? 'pagi' : (h < 14 ? 'tghari' : 'petang')); }
-  function slotFull(s){ var h = Number(String(s).slice(0,2)), m = String(s).slice(3,5);
-    return (h > 12 ? h-12 : h) + ':' + m + ' ' + (h < 12 ? 'pagi' : (h < 14 ? 'tengah hari' : 'petang')); }
+  function slotT(s){ var h = Number(String(s).slice(0,2)), m = String(s).slice(3,5); return isNaN(h) ? esc(s) : (h > 12 ? h-12 : h) + ':' + m; }
+  function slotP(s){ var h = Number(String(s).slice(0,2)); return h < 12 ? 'pagi' : (h < 14 ? 'tghari' : 'petang'); }
+  function slotFull(s){ var h = Number(String(s).slice(0,2)); return slotT(s) + ' ' + (h < 12 ? 'pagi' : (h < 14 ? 'tengah hari' : 'petang')); }
+  function mins(s){ return Number(String(s).slice(0,2))*60 + Number(String(s).slice(3,5)); }
   function waNum(t){ var d = String(t).replace(/\D/g,''); if(d.charAt(0) === '0') d = '6' + d; return d; }
   function telKey(t){ var d = String(t).replace(/\D/g,''); if(d.indexOf('60') === 0) d = d.slice(1); return d; }
-  function first(n){ n = String(n).trim().toLowerCase().replace(/\b\w/g, function(c){ return c.toUpperCase(); }); return n; }
+  function first(n){ return String(n).trim().toLowerCase().replace(/\b\w/g, function(c){ return c.toUpperCase(); }); }
+  function ini(n){ var p = String(n).trim().split(/\s+/); return ((p[0]||'')[0] + ((p[1]||'')[0]||'')).toUpperCase(); }
+  function avc(n){ var h = 0; String(n).toLowerCase().split('').forEach(function(c){ h = (h*31 + c.charCodeAt(0)) >>> 0; }); return AVC[h % AVC.length]; }
   function active(b){ return INACTIVE.indexOf(b.status) < 0; }
-  function stCls(s){ return 's-' + String(s).split(' ')[0]; }
+  function stKey(s){ return String(s).split(' ')[0]; }
   function bySlot(a, b){ return (a.date + a.slot).localeCompare(b.date + b.slot); }
   function waLink(b, msg){ return 'https://wa.me/' + waNum(b.tel) + (msg ? '?text=' + encodeURIComponent(msg) : ''); }
-
+  function nowKL(){ var p = {}; try { new Intl.DateTimeFormat('en-GB',{timeZone:TZ,hour:'numeric',minute:'numeric',hour12:false}).formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; }); return (+p.hour % 24)*60 + (+p.minute); } catch(e){ var n = new Date(); return n.getHours()*60 + n.getMinutes(); } }
+  function delta(a, b){ var d = a - b; return d > 0 ? '<span class="up">↑ ' + d + '</span>' : (d < 0 ? '<span class="dn">↓ ' + (-d) + '</span>' : '<span class="eq">sama</span>'); }
   var toastT;
   function toast(m, bad){ var t = $('toast'); t.textContent = m; t.className = 'toast on' + (bad ? ' bad' : ''); clearTimeout(toastT); toastT = setTimeout(function(){ t.className = 'toast'; }, 2400); }
   function store(k, v){ try { if(v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch(e){} }
@@ -247,8 +338,7 @@
   function msgSahkan(b){
     return 'Assalamualaikum ' + first(b.nama) + ',\n\nBooking anda di ' + D.business + ' telah *DISAHKAN* ✅\n\n' +
       'No. Rujukan: ' + b.ref + '\nTarikh: ' + dLong(b.date) + '\nMasa: ' + slotFull(b.slot) +
-      '\nKereta: ' + b.kereta + (b.plat ? ' (' + b.plat + ')' : '') +
-      '\n\nKalau ada perubahan, balas mesej ni ya. Terima kasih!';
+      '\nKereta: ' + b.kereta + (b.plat ? ' (' + b.plat + ')' : '') + '\n\nKalau ada perubahan, balas mesej ni ya. Terima kasih!';
   }
   function msgReminder(b){
     var bila = b.date === addDays(D.today, 1) ? '*esok*, ' + dLong(b.date) : dLong(b.date);
@@ -265,203 +355,253 @@
   /* ---------- kiraan ---------- */
   function compute(){
     var B = D.bookings, t = D.today, tm = addDays(t, 1), d30 = addDays(t, -30), month = t.slice(0,7);
-    var dupCount = {};
-    B.forEach(function(b){ if(active(b) && b.date >= t){ var k = telKey(b.tel) + '|' + b.date; dupCount[k] = (dupCount[k] || 0) + 1; } });
-    B.forEach(function(b){ b.dup = active(b) && b.date >= t && dupCount[telKey(b.tel) + '|' + b.date] > 1; });
-
+    var dc = {};
+    B.forEach(function(b){ if(active(b) && b.date >= t){ var k = telKey(b.tel) + '|' + b.date; dc[k] = (dc[k] || 0) + 1; } });
+    B.forEach(function(b){ b.dup = active(b) && b.date >= t && dc[telKey(b.tel) + '|' + b.date] > 1; });
     var F = {
-      dup:     B.filter(function(b){ return b.dup; }).sort(bySlot),
-      sahkan:  B.filter(function(b){ return b.status === 'Baru' && b.date >= t && !b.dup; }).sort(bySlot),
-      remind:  B.filter(function(b){ return b.date === tm && (b.status === 'Baru' || b.status === 'Disahkan') && !b.rem; }).sort(bySlot),
-      review:  D.reviewUrl ? B.filter(function(b){ return b.status === 'Siap' && !b.rev && b.date >= d30; }).sort(bySlot) : [],
-      lapuk:   B.filter(function(b){ return b.date && b.date < t && ['Baru','Disahkan','Dalam servis'].indexOf(b.status) > -1; }).sort(bySlot).reverse()
+      dup:    B.filter(function(b){ return b.dup; }).sort(bySlot),
+      sahkan: B.filter(function(b){ return b.status === 'Baru' && b.date >= t && !b.dup; }).sort(bySlot),
+      remind: B.filter(function(b){ return b.date === tm && (b.status === 'Baru' || b.status === 'Disahkan') && !b.rem; }).sort(bySlot),
+      review: D.reviewUrl ? B.filter(function(b){ return b.status === 'Siap' && !b.rev && b.date >= d30; }).sort(bySlot) : [],
+      lapuk:  B.filter(function(b){ return b.date && b.date < t && ['Baru','Disahkan','Dalam servis'].indexOf(b.status) > -1; }).sort(bySlot).reverse()
     };
-    var uniq = {};
-    Object.keys(F).forEach(function(k){ F[k].forEach(function(b){ uniq[b.row] = 1; }); });
-
+    var uniq = {}; Object.keys(F).forEach(function(k){ F[k].forEach(function(b){ uniq[b.row] = 1; }); });
+    // minggu (Isnin-Ahad) vs minggu lepas sehingga hari yang sama
+    var w = (dObj(t).w + 6) % 7, ws = addDays(t, -w), pws = addDays(ws, -7), pwe = addDays(t, -7);
+    var inR = function(a, z){ return B.filter(function(b){ return active(b) && b.date >= a && b.date <= z; }).length; };
+    var dom = dObj(t).d, pm = dObj(t).m === 1 ? (dObj(t).y-1) + '-12' : dObj(t).y + '-' + ('0' + (dObj(t).m-1)).slice(-2);
     return {
       today: B.filter(function(b){ return b.date === t && active(b); }).sort(bySlot),
       todayAll: B.filter(function(b){ return b.date === t; }).sort(bySlot),
       tomorrow: B.filter(function(b){ return b.date === tm && active(b); }),
+      lastWeekSameDay: B.filter(function(b){ return b.date === addDays(t, -7) && active(b); }).length,
       next: B.filter(function(b){ return b.date > t && active(b); }).sort(bySlot),
-      month: B.filter(function(b){ return b.date.slice(0,7) === month && active(b); }),
-      follow: F,
-      followN: Object.keys(uniq).length
+      week: inR(ws, addDays(ws, 6)), weekPrev: inR(pws, pwe), weekSoFar: inR(ws, t),
+      month: B.filter(function(b){ return b.date.slice(0,7) === month && active(b); }).length,
+      monthPrevSameDays: B.filter(function(b){ return b.date.slice(0,7) === pm && Number(b.date.slice(8)) <= dom && active(b); }).length,
+      follow: F, followN: Object.keys(uniq).length
     };
   }
 
-  /* ---------- render ---------- */
+  /* ---------- komponen ---------- */
+  function nextBtn(b){
+    var t = D.today;
+    if (b.status === 'Baru' && b.date >= t) return '<a class="next n-wa" target="_blank" rel="noopener" href="' + esc(waLink(b, msgSahkan(b))) + '" data-act="sahkan" data-row="' + b.row + '">' + IC.wa + 'Sahkan &amp; WhatsApp</a>';
+    if (b.status === 'Disahkan' && b.date === t) return '<button class="next n-blue" data-set="Dalam servis" data-row="' + b.row + '">' + IC.fwd + 'Mula Servis</button>';
+    if (b.status === 'Disahkan' && b.date === addDays(t, 1)) return b.rem
+      ? '<a class="next n-done" target="_blank" rel="noopener" href="' + esc(waLink(b, msgReminder(b))) + '" data-act="rem" data-row="' + b.row + '">✓ Reminder dihantar ' + esc(b.rem) + '</a>'
+      : '<a class="next n-ghost" target="_blank" rel="noopener" href="' + esc(waLink(b, msgReminder(b))) + '" data-act="rem" data-row="' + b.row + '">⏰ Hantar Reminder</a>';
+    if (b.status === 'Dalam servis') return '<button class="next n-orange" data-set="Siap" data-row="' + b.row + '">✓ Tandakan Siap</button>';
+    if (b.status === 'Siap' && D.reviewUrl) return b.rev
+      ? '<a class="next n-done" target="_blank" rel="noopener" href="' + esc(waLink(b, msgReview(b))) + '" data-act="rev" data-row="' + b.row + '">✓ Review diminta ' + esc(b.rev) + '</a>'
+      : '<a class="next n-ghost" target="_blank" rel="noopener" href="' + esc(waLink(b, msgReview(b))) + '" data-act="rev" data-row="' + b.row + '">★ Minta Review Google</a>';
+    if (b.date < t && (b.status === 'Baru' || b.status === 'Disahkan')) return '<button class="next n-orange" data-set="Siap" data-row="' + b.row + '">✓ Tandakan Siap</button>';
+    return '';
+  }
+  function detail(b){
+    var chips = String(b.masalah || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+    var st = D.statuses.map(function(s){ return '<button class="' + (s === b.status ? 'on' : '') + '" data-set="' + esc(s) + '" data-row="' + b.row + '">' + esc(s) + '</button>'; }).join('');
+    return '<dl class="dl"><dt>Tarikh</dt><dd>' + dLong(b.date) + ', ' + slotFull(b.slot) + '</dd>' +
+      '<dt>Telefon</dt><dd>' + esc(b.tel) + '</dd><dt>Kereta</dt><dd>' + esc(b.kereta) + (b.plat ? ' · <b>' + esc(b.plat) + '</b>' : '') + '</dd>' +
+      '<dt>Masalah</dt><dd>' + (chips.length ? esc(chips.join(', ')) : '-') + '</dd><dt>Rujukan</dt><dd>' + esc(b.ref) + '</dd></dl>' +
+      (b.catatan ? '<div class="q">“' + esc(b.catatan) + '”</div>' : '') +
+      '<div class="acts"><a class="act" href="tel:' + esc(String(b.tel).replace(/[^\d+]/g,'')) + '">' + IC.phone + 'Call</a>' +
+        '<a class="act" target="_blank" rel="noopener" href="' + esc(waLink(b)) + '">' + IC.wa + 'WhatsApp</a>' +
+        (b.date > D.today && active(b) ? '<a class="act" target="_blank" rel="noopener" href="' + esc(waLink(b, msgReminder(b))) + '" data-act="rem" data-row="' + b.row + '">⏰<span>Reminder</span></a>'
+                                       : '<a class="act" target="_blank" rel="noopener" href="' + esc(waLink(b, msgSahkan(b))) + '">' + IC.cal + 'Pengesahan</a>') + '</div>' +
+      '<div class="stlbl">Tukar status</div><div class="stset">' + st + '</div>' +
+      '<div class="stlbl">Nota kerani</div><div class="nedit"><textarea id="nt' + b.row + '" placeholder="Contoh: dah call, customer minta tukar 11:30">' + esc(b.nota) + '</textarea>' +
+        '<button data-savenote="' + b.row + '">Simpan Nota</button></div>';
+  }
   function card(b, opts){
     opts = opts || {};
-    var t = D.today, future = b.date >= t, past = b.date < t;
-    var chips = String(b.masalah || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean)
+    var chips = String(b.masalah || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean).slice(0,3)
       .map(function(s){ return '<span class="chip">' + esc(s) + '</span>'; }).join('');
-    var opt = D.statuses.map(function(s){ return '<option' + (s === b.status ? ' selected' : '') + '>' + esc(s) + '</option>'; }).join('');
-
-    var acts = [];
-    if (b.status === 'Baru' && future) {
-      acts.push('<a class="wa" target="_blank" href="' + esc(waLink(b, msgSahkan(b))) + '" data-act="sahkan" data-row="' + b.row + '">✓ Sahkan &amp; WhatsApp</a>');
-    }
-    if (future && b.date <= addDays(t, 1) && (b.status === 'Baru' || b.status === 'Disahkan') && b.date !== t) {
-      acts.push(b.rem
-        ? '<a class="wa done" target="_blank" href="' + esc(waLink(b, msgReminder(b))) + '" data-act="rem" data-row="' + b.row + '">✓ Reminder dihantar ' + esc(b.rem) + '</a>'
-        : '<a class="wa ghost" target="_blank" href="' + esc(waLink(b, msgReminder(b))) + '" data-act="rem" data-row="' + b.row + '">⏰ Hantar Reminder</a>');
-    }
-    if (b.status === 'Siap' && D.reviewUrl) {
-      acts.push(b.rev
-        ? '<a class="wa done" target="_blank" href="' + esc(waLink(b, msgReview(b))) + '" data-act="rev" data-row="' + b.row + '">✓ Review diminta ' + esc(b.rev) + '</a>'
-        : '<a class="wa ghost" target="_blank" href="' + esc(waLink(b, msgReview(b))) + '" data-act="rev" data-row="' + b.row + '">★ Minta Review Google</a>');
-    }
-
-    var nota = b.nota ? '<div class="note ' + (b.nota.indexOf('⚠') === 0 ? 'w' : 'k') + '">📝 ' + esc(b.nota) + '</div>' : '';
-    var dup = b.dup ? '<div class="note w">⚠ No. telefon ni ada lebih dari satu booking pada hari yang sama. Semak, dan tukar yang berganda kepada "Batal".</div>' : '';
-
-    return '<div class="card' + (b.dup ? ' dup' : '') + '" id="c' + b.row + '">' +
-      '<div class="top"><div class="time">' + slotLbl(b.slot) +
-        (opts.showDate || past || b.date !== t ? '<small>' + dShort(b.date) + '</small>' : '') + '</div>' +
-        '<span class="pill ' + stCls(b.status) + '">' + esc(b.status) + '</span></div>' +
-      '<div class="nm">' + esc(String(b.nama).toLowerCase()) + '</div>' +
-      '<div class="car">' + esc(b.kereta) + (b.plat ? ' · <b>' + esc(b.plat) + '</b>' : '') + '</div>' +
+    return '<div class="bk st-' + stKey(b.status) + (b.dup ? ' dup' : '') + (SEL === b.row ? ' sel' : '') + '" data-card="' + b.row + '" id="c' + b.row + '">' +
+      '<div class="row1"><div class="av" style="background:' + avc(b.nama) + '">' + esc(ini(b.nama)) + '</div>' +
+      '<div class="who2"><b>' + esc(String(b.nama).toLowerCase()) + '</b><span>' + esc(b.kereta) + (b.plat ? ' · <em>' + esc(b.plat) + '</em>' : '') + '</span></div>' +
+      '<span class="pill p-' + stKey(b.status) + '">' + esc(b.status) + '</span></div>' +
+      (opts.showDate ? '<div class="when"><span>' + IC.cal.replace('<svg','<svg width="13" height="13" style="vertical-align:-2px"') + ' <b>' + dShort(b.date) + '</b>, ' + slotFull(b.slot) + '</span></div>' : '') +
       (chips ? '<div class="chips">' + chips + '</div>' : '') +
-      (b.catatan ? '<div class="note">“' + esc(b.catatan) + '”</div>' : '') +
-      dup + nota +
-      '<div class="meta">' + esc(b.ref) + ' · ' + esc(b.tel) + '</div>' +
-      '<div class="row2">' +
-        '<select class="st" data-row="' + b.row + '">' + opt + '</select>' +
-        '<a class="sq" href="tel:' + esc(String(b.tel).replace(/[^\d+]/g,'')) + '" title="Call">📞</a>' +
-        '<a class="sq" target="_blank" href="' + esc(waLink(b)) + '" title="WhatsApp">💬</a>' +
-        '<button class="sq" data-note="' + b.row + '" title="Nota kerani">✎</button>' +
-      '</div>' +
-      '<div class="nedit" id="n' + b.row + '"><textarea placeholder="Nota kerani (contoh: dah call, customer minta tukar 11:30)">' + esc(b.nota) + '</textarea>' +
-        '<button data-savenote="' + b.row + '">Simpan Nota</button></div>' +
-      (acts.length ? '<div class="acts">' + acts.join('') + '</div>' : '') +
+      (b.dup ? '<div class="warn">⚠ Nombor ni ada lebih dari satu booking hari yang sama. Kekalkan satu, tukar yang lain kepada "Batal".</div>' : '') +
+      (b.nota ? '<div class="q" style="border-left:3px solid var(--gold)">📝 ' + esc(b.nota) + '</div>' : '') +
+      nextBtn(b) +
+      '<div class="more">' + detail(b) + '</div>' +
     '</div>';
   }
+  function sec(title, n, right, hint){ return '<h2 class="sec">' + title + (n != null ? ' <span class="c">' + n + '</span>' : '') + (right ? '<span class="r">' + right + '</span>' : '') + '</h2>' + (hint ? '<p class="hint">' + hint + '</p>' : ''); }
 
-  function sec(title, n, hint){ return '<h2 class="sec">' + title + (n != null ? ' <span class="c">' + n + '</span>' : '') + '</h2>' + (hint ? '<p class="hint">' + hint + '</p>' : ''); }
-
+  /* ---------- render ---------- */
   function render(){
-    var C = compute();
-    $('hBiz').textContent = D.business.split(' ').slice(0,2).join(' ');
-    $('hDate').textContent = dLong(D.today);
+    var C = compute(), t = D.today, now = nowKL(), wd = dObj(t).w;
+    var h = Math.floor(now/60), greet = h < 12 ? 'Selamat pagi' : (h < 15 ? 'Selamat tengah hari' : (h < 19 ? 'Selamat petang' : 'Selamat malam'));
+    $('hHi').textContent = greet + ', ' + D.business.split(' ').slice(0,2).join(' ');
+    $('hDate').textContent = dShort(t);
+    var isOpen = CLOSED_DAYS.indexOf(wd) < 0 && now >= OPEN && now < CLOSE;
+    $('hOpen').className = 'ostat ' + (isOpen ? 'on' : 'off'); $('hOpen').lastChild.textContent = isOpen ? 'Buka' : 'Tutup';
 
-    $('stats').innerHTML =
-      '<div class="stat" data-go="today"><div class="n">' + C.today.length + '</div><div class="l">Booking hari ini</div></div>' +
-      '<div class="stat" data-go="next"><div class="n">' + C.tomorrow.length + '</div><div class="l">Booking esok</div></div>' +
-      '<div class="stat' + (C.followN ? ' hot' : '') + '" data-go="follow"><div class="n">' + C.followN + '</div><div class="l">Perlu tindakan</div></div>' +
-      '<div class="stat"><div class="n">' + C.month.length + '</div><div class="l">Booking bulan ni</div></div>';
-
+    var cap = Math.min(100, Math.round(C.today.length / SLOTS.length * 100));
+    $('kpis').innerHTML =
+      '<div class="kpi" data-go="today"><div class="top"><span class="ic" style="color:var(--gold)">' + IC.cal + '</span></div><div class="n">' + C.today.length + '<span style="font-size:15px;color:var(--mut)"> / ' + SLOTS.length + '</span></div><div class="l">Slot terisi hari ini</div><div class="cap"><i style="width:' + cap + '%"></i></div></div>' +
+      '<div class="kpi" data-go="next"><div class="top"><span class="ic" style="color:var(--blue)">' + IC.fwd + '</span></div><div class="n">' + C.tomorrow.length + '</div><div class="l">Booking esok</div></div>' +
+      '<div class="kpi' + (C.followN ? ' hot' : '') + '" data-go="follow"><div class="top"><span class="ic" style="color:var(--red)">' + IC.flag + '</span></div><div class="n">' + C.followN + '</div><div class="l">Perlu tindakan</div></div>' +
+      '<div class="kpi" data-go="rep"><div class="top"><span class="ic" style="color:var(--green)">' + IC.chart + '</span></div><div class="n">' + C.weekSoFar + '</div><div class="l">Booking minggu ni</div><div class="d">' + delta(C.weekSoFar, C.weekPrev) + ' <span class="eq">vs minggu lepas</span></div></div>';
     var fb = $('fBadge'); fb.hidden = !C.followN; fb.textContent = C.followN;
 
-    // HARI INI
-    var cancelled = C.todayAll.length - C.today.length;
-    $('v-today').innerHTML = sec('Hari Ini', C.today.length) +
-      (C.today.length ? C.today.map(function(b){ return card(b); }).join('') : '<div class="empty">Tiada booking untuk hari ini.</div>') +
-      (cancelled ? '<p class="hint" style="margin-top:12px">' + cancelled + ' booking hari ini berstatus Batal / Tak datang.</p>' : '');
+    renderToday(C, now); renderNext(C); renderFollow(C); renderCust(); renderRep(); renderPanel();
+  }
 
-    // AKAN DATANG
-    var html = sec('Akan Datang', C.next.length), cur = '';
-    if (!C.next.length) html += '<div class="empty">Tiada booking akan datang.</div>';
-    C.next.forEach(function(b){
-      if (b.date !== cur) {
-        cur = b.date;
-        var n = C.next.filter(function(x){ return x.date === cur; }).length;
-        var tag = cur === addDays(D.today, 1) ? 'Esok — ' : '';
-        html += '<div class="dg"><b>' + tag + dShort(cur) + '</b><span>' + n + ' kereta</span></div>';
-      }
-      html += card(b);
+  function renderToday(C, now){
+    var t = D.today, html = sec('Jadual Hari Ini', C.today.length, dShort(t));
+    if (CLOSED_DAYS.indexOf(dObj(t).w) > -1 && !C.todayAll.length) { $('v-today').innerHTML = html + '<div class="empty">Hari ini bengkel tutup. Rehat dulu 😄</div>'; return; }
+    var bySlotMap = {}; C.todayAll.forEach(function(b){ (bySlotMap[b.slot] = bySlotMap[b.slot] || []).push(b); });
+    var extra = Object.keys(bySlotMap).filter(function(s){ return SLOTS.indexOf(s) < 0; });
+    var all = SLOTS.concat(extra).sort();
+    html += '<div class="tl" id="tl">';
+    all.forEach(function(s){
+      var list = (bySlotMap[s] || []), act = list.filter(active), past = mins(s) + 60 <= now;
+      html += '<div class="slot' + (act.length ? ' has' : '') + (past ? ' past' : '') + '" data-min="' + mins(s) + '"><div class="tm"><b>' + slotT(s) + '</b><small>' + slotP(s) + '</small></div><div class="col">' +
+        (list.length ? list.map(function(b){ return card(b); }).join('') : '<div class="free">Slot kosong<span>' + (past ? '' : 'Boleh terima') + '</span></div>') + '</div></div>';
+    });
+    html += '</div>';
+    $('v-today').innerHTML = html;
+    // garis "sekarang"
+    var rows = [].slice.call(document.querySelectorAll('#tl .slot'));
+    if (rows.length && now >= mins(all[0]) - 30 && now <= mins(all[all.length-1]) + 60) {
+      var after = rows.filter(function(r){ return +r.dataset.min > now; })[0];
+      var line = document.createElement('div'); line.className = 'nowline';
+      var hh = Math.floor(now/60), mm = ('0' + now%60).slice(-2);
+      line.innerHTML = '<span>' + (hh > 12 ? hh-12 : hh) + ':' + mm + '</span>';
+      line.style.top = (after ? after.offsetTop - 4 : $('tl').offsetHeight - 4) + 'px';
+      $('tl').appendChild(line);
+    }
+  }
+
+  function renderNext(C){
+    var t = D.today, html = sec('Akan Datang', C.next.length);
+    html += '<div class="strip">';
+    for (var i = 1; i <= 7; i++) {
+      var d = addDays(t, i), o = dObj(d), n = C.next.filter(function(b){ return b.date === d; }).length, off = CLOSED_DAYS.indexOf(o.w) > -1;
+      html += '<div class="day' + (off ? ' off' : '') + (DAYF === d ? ' on' : '') + '" data-day="' + d + '"><small>' + (i === 1 ? 'Esok' : HS[o.w]) + '</small><b>' + o.d + '</b><i>' + (off ? 'tutup' : (n ? n + ' 🚗' : '–')) + '</i></div>';
+    }
+    html += '</div>';
+    var list = DAYF ? C.next.filter(function(b){ return b.date === DAYF; }) : C.next, cur = '';
+    if (DAYF) html += '<p class="hint" style="margin-top:10px">Tunjuk ' + dLong(DAYF) + ' sahaja · <a href="#" data-day="" style="color:var(--gold);font-weight:700">Tunjuk semua</a></p>';
+    if (!list.length) html += '<div class="empty" style="margin-top:12px">Tiada booking.</div>';
+    list.forEach(function(b){
+      if (b.date !== cur) { cur = b.date; var n = list.filter(function(x){ return x.date === cur; }).length;
+        html += '<h2 class="sec" style="margin-top:20px">' + (cur === addDays(t,1) ? 'Esok · ' : '') + dShort(cur) + '<span class="r">' + n + ' kereta</span></h2>'; }
+      html += '<div style="display:flex;gap:10px;align-items:flex-start"><div style="width:52px;flex:none;padding-top:16px;text-align:right"><b style="font-size:14px">' + slotT(b.slot) + '</b><div style="font-size:10.5px;color:var(--mut2);font-weight:600">' + slotP(b.slot) + '</div></div><div style="flex:1;min-width:0">' + card(b) + '</div></div>';
     });
     $('v-next').innerHTML = html;
+  }
 
-    // FOLLOW UP
+  function renderFollow(C){
     var F = C.follow, fh = '';
-    if (F.dup.length) fh += sec('Booking berganda', F.dup.length, 'Customer sama, hari sama. Biasanya tertekan butang dua kali. Kekalkan satu, tukar yang lain kepada "Batal" supaya slot terbuka semula.') + F.dup.map(function(b){ return card(b, {showDate:1}); }).join('');
-    if (F.sahkan.length) fh += sec('Belum disahkan', F.sahkan.length, 'Tekan "Sahkan &amp; WhatsApp" — status terus tukar jadi Disahkan dan mesej pengesahan siap ditaip.') + F.sahkan.map(function(b){ return card(b, {showDate:1}); }).join('');
-    if (F.remind.length) fh += sec('Reminder untuk esok', F.remind.length, 'Hantar peringatan supaya customer tak lupa datang.') + F.remind.map(function(b){ return card(b, {showDate:1}); }).join('');
-    if (F.review.length) fh += sec('Minta review Google', F.review.length, 'Servis dah siap dalam 30 hari lepas. Lepas tekan butang, customer keluar dari senarai ni.') + F.review.map(function(b){ return card(b, {showDate:1}); }).join('');
-    if (F.lapuk.length) fh += sec('Status belum dikemaskini', F.lapuk.length, 'Tarikh dah lepas tapi status belum Siap / Tak datang. Kemaskini supaya rekod dan laporan bulanan tepat.') + F.lapuk.map(function(b){ return card(b, {showDate:1}); }).join('');
-    if (!D.reviewUrl) fh += '<p class="hint" style="margin-top:20px">ℹ Butang "Minta Review Google" akan muncul bila link review diisi dalam tetapan.</p>';
+    if (F.dup.length) fh += sec('Booking berganda', F.dup.length, '', 'Customer sama, hari sama. Kekalkan satu, tukar yang lain kepada "Batal" supaya slot terbuka semula.') + F.dup.map(function(b){ return card(b, {showDate:1}); }).join('');
+    if (F.sahkan.length) fh += sec('Belum disahkan', F.sahkan.length, '', 'Tekan "Sahkan & WhatsApp": status terus jadi Disahkan, mesej pengesahan siap ditaip.') + F.sahkan.map(function(b){ return card(b, {showDate:1}); }).join('');
+    if (F.remind.length) fh += sec('Reminder untuk esok', F.remind.length, '', 'Hantar peringatan supaya customer tak lupa datang.') + F.remind.map(function(b){ return card(b, {showDate:1}); }).join('');
+    if (F.review.length) fh += sec('Minta review Google', F.review.length, '', 'Servis siap dalam 30 hari lepas. Lepas tekan butang, customer keluar dari senarai ni.') + F.review.map(function(b){ return card(b, {showDate:1}); }).join('');
+    if (F.lapuk.length) fh += sec('Status belum dikemaskini', F.lapuk.length, '', 'Tarikh dah lepas tapi status belum Siap / Tak datang.') + F.lapuk.map(function(b){ return card(b, {showDate:1}); }).join('');
+    if (!D.reviewUrl) fh += '<p class="hint" style="margin-top:20px">ℹ Butang "Minta Review Google" muncul bila link review diisi dalam tetapan.</p>';
     $('v-follow').innerHTML = fh || sec('Follow Up', 0) + '<div class="empty">Semua beres 👍 Tiada yang perlu di-follow up.</div>';
-
-    renderCust();
   }
 
   function renderCust(){
     var map = {};
-    D.bookings.forEach(function(b){
-      var k = telKey(b.tel); if (!k) return;
-      (map[k] = map[k] || { k:k, list:[] }).list.push(b);
-    });
+    D.bookings.forEach(function(b){ var k = telKey(b.tel); if (!k) return; (map[k] = map[k] || { k:k, list:[] }).list.push(b); });
     var q = Q.trim().toLowerCase(), qd = q.replace(/\D/g,'');
     var arr = Object.keys(map).map(function(k){
-      var c = map[k]; c.list.sort(bySlot);
-      var l = c.list[c.list.length - 1];
-      c.nama = l.nama; c.tel = l.tel; c.last = l;
-      c.siap = c.list.filter(function(b){ return b.status === 'Siap'; }).length;
-      c.kereta = c.list.map(function(b){ return b.kereta + (b.plat ? ' (' + b.plat + ')' : ''); })
-        .filter(function(v, i, a){ return a.indexOf(v) === i; }).join(', ');
+      var c = map[k]; c.list.sort(bySlot); var l = c.list[c.list.length - 1];
+      c.nama = l.nama; c.tel = l.tel; c.last = l; c.siap = c.list.filter(function(b){ return b.status === 'Siap'; }).length;
+      c.kereta = c.list.map(function(b){ return b.kereta + (b.plat ? ' (' + b.plat + ')' : ''); }).filter(function(v, i, a){ return a.indexOf(v) === i; }).join(', ');
       return c;
     }).filter(function(c){
       if (!q) return true;
-      var hay = (c.list.map(function(b){ return b.nama + ' ' + b.plat + ' ' + b.kereta; }).join(' ')).toLowerCase().replace(/\s+/g,' ');
+      var hay = c.list.map(function(b){ return b.nama + ' ' + b.plat + ' ' + b.kereta; }).join(' ').toLowerCase();
       return hay.indexOf(q) > -1 || hay.replace(/\s/g,'').indexOf(q.replace(/\s/g,'')) > -1 || (qd.length >= 3 && c.k.indexOf(qd.replace(/^6/,'')) > -1);
     }).sort(function(a, b){ return (b.last.date + b.last.slot).localeCompare(a.last.date + a.last.slot); });
-
-    $('custList').innerHTML = '<h2 class="sec">Customer <span class="c">' + arr.length + '</span></h2>' + (arr.length ? arr.map(function(c){
-      return '<div class="cust" data-cust>' +
-        '<div class="r1"><div class="cn">' + esc(String(c.nama).toLowerCase()) + '</div><span class="cc">' + c.list.length + ' booking' + (c.siap ? ' · ' + c.siap + ' siap' : '') + '</span></div>' +
-        '<div class="cs">' + esc(c.tel) + ' · ' + esc(c.kereta) + '</div>' +
+    $('custList').innerHTML = sec('Customer', arr.length) + (arr.length ? arr.map(function(c){
+      return '<div class="cust" data-cust><div class="r1"><div class="av" style="background:' + avc(c.nama) + '">' + esc(ini(c.nama)) + '</div>' +
+        '<div class="who2"><b>' + esc(String(c.nama).toLowerCase()) + '</b><span>' + esc(c.tel) + ' · ' + esc(c.kereta) + '</span></div>' +
+        '<span class="cc">' + c.list.length + 'x' + (c.siap ? ' · ' + c.siap + ' siap' : '') + '</span></div>' +
         '<div class="hist">' + c.list.slice().reverse().map(function(b){
-          return '<div class="hl"><div>' + dShort(b.date) + ', ' + slotLbl(b.slot) + '<div class="hm">' + esc(b.masalah || '-') + '</div></div><span class="pill ' + stCls(b.status) + '" style="align-self:center">' + esc(b.status) + '</span></div>';
+          return '<div class="hl"><div>' + dShort(b.date) + ', ' + slotFull(b.slot) + '<div class="hm">' + esc(b.masalah || '-') + '</div></div><span class="pill p-' + stKey(b.status) + '">' + esc(b.status) + '</span></div>';
         }).join('') +
-        '<div class="cact"><a class="wa ghost" target="_blank" href="' + esc(waLink(c.last)) + '">💬 WhatsApp</a></div></div>' +
-      '</div>';
+        '<div class="acts" style="grid-template-columns:1fr 1fr"><a class="act" href="tel:' + esc(String(c.tel).replace(/[^\d+]/g,'')) + '">' + IC.phone + 'Call</a><a class="act" target="_blank" rel="noopener" href="' + esc(waLink(c.last)) + '">' + IC.wa + 'WhatsApp</a></div></div></div>';
     }).join('') : '<div class="empty">Tiada customer dijumpai.</div>');
+  }
+
+  function renderRep(){
+    var t = D.today, m = REPM || t.slice(0,7), mo = Number(m.slice(5)), yr = Number(m.slice(0,4));
+    var B = D.bookings.filter(function(b){ return b.date.slice(0,7) === m; });
+    var act = B.filter(active), siap = B.filter(function(b){ return b.status === 'Siap'; }).length;
+    var batal = B.filter(function(b){ return b.status === 'Batal'; }).length, tak = B.filter(function(b){ return b.status === 'Tak datang'; }).length;
+    var rev = B.filter(function(b){ return b.rev; }).length;
+    var prevM = mo === 1 ? (yr-1) + '-12' : yr + '-' + ('0' + (mo-1)).slice(-2);
+    var prevAct = D.bookings.filter(function(b){ return b.date.slice(0,7) === prevM && active(b); }).length;
+    var pct = function(a, b){ return b ? Math.round(a / b * 100) : 0; };
+    var mas = {}; act.forEach(function(b){ String(b.masalah || '').split(',').forEach(function(s){ s = s.trim(); if (s) mas[s] = (mas[s] || 0) + 1; }); });
+    var mk = Object.keys(mas).sort(function(a, b){ return mas[b] - mas[a]; }).slice(0,6), mmax = mk.length ? mas[mk[0]] : 1;
+    var days = [1,2,3,4,5,6,0].map(function(w){ return { w:w, n: act.filter(function(b){ return dObj(b.date).w === w; }).length }; });
+    var dmax = Math.max.apply(null, days.map(function(d){ return d.n; }).concat([1]));
+    var sl = SLOTS.map(function(s){ return { s:s, n: act.filter(function(b){ return b.slot === s; }).length }; }), smax = Math.max.apply(null, sl.map(function(x){ return x.n; }).concat([1]));
+    var html = '<div class="mnav"><button data-rm="-1">‹</button><b>' + BULAN[mo-1] + ' ' + yr + '</b><button data-rm="1"' + (m >= t.slice(0,7) ? ' disabled style="opacity:.3"' : '') + '>›</button></div>' +
+      '<h2 class="sec">Ringkasan</h2><div class="rgrid">' +
+      '<div class="rc"><div class="n">' + act.length + '</div><div class="l">Booking</div><div class="s">' + delta(act.length, prevAct) + ' <span class="eq">vs ' + BLN[(mo+10)%12] + '</span></div></div>' +
+      '<div class="rc"><div class="n" style="color:var(--green)">' + siap + '</div><div class="l">Siap diservis</div><div class="s eq">' + pct(siap, act.length) + '% daripada booking</div></div>' +
+      '<div class="rc"><div class="n" style="color:var(--red)">' + (batal + tak) + '</div><div class="l">Batal / tak datang</div><div class="s eq">' + pct(batal + tak, B.length) + '% daripada semua</div></div>' +
+      '<div class="rc"><div class="n" style="color:var(--gold)">' + rev + '</div><div class="l">Review diminta</div><div class="s eq">' + pct(rev, siap) + '% daripada yang siap</div></div></div>' +
+      '<div class="box"><h3>Masalah paling kerap</h3>' + (mk.length ? mk.map(function(k){
+        return '<div class="bar"><span>' + esc(k) + '</span><span class="t"><i style="width:' + Math.round(mas[k]/mmax*100) + '%"></i></span><span class="v">' + pct(mas[k], act.length) + '%</span></div>'; }).join('') : '<p class="hint">Tiada data lagi.</p>') + '</div>' +
+      '<div class="box"><h3>Hari paling sibuk</h3><div class="cols">' + days.map(function(d){
+        return '<div><b>' + (d.n || '') + '</b><i class="' + (d.n === dmax && d.n ? 'top' : '') + '" style="height:' + Math.max(4, Math.round(d.n/dmax*80)) + 'px"></i><small>' + HS[d.w] + '</small></div>'; }).join('') + '</div></div>' +
+      '<div class="box"><h3>Slot paling popular</h3><div class="cols">' + sl.map(function(x){
+        return '<div><b>' + (x.n || '') + '</b><i class="' + (x.n === smax && x.n ? 'top' : '') + '" style="height:' + Math.max(4, Math.round(x.n/smax*80)) + 'px"></i><small>' + slotT(x.s) + '</small></div>'; }).join('') + '</div></div>';
+    $('v-rep').innerHTML = html;
+  }
+
+  function renderPanel(){
+    var b = SEL ? find(SEL) : null, box = $('panelBox');
+    if (!b) { box.innerHTML = '<div class="pempty">Pilih booking untuk lihat butiran,<br>tukar status dan hantar WhatsApp.</div>'; return; }
+    box.innerHTML = '<div class="ph"><div class="av" style="background:' + avc(b.nama) + '">' + esc(ini(b.nama)) + '</div><div style="flex:1;min-width:0"><b>' + esc(String(b.nama).toLowerCase()) + '</b><span>' + esc(b.kereta) + (b.plat ? ' · ' + esc(b.plat) : '') + '</span></div><span class="pill p-' + stKey(b.status) + '">' + esc(b.status) + '</span></div>' +
+      nextBtn(b).replace('class="next', 'style="margin:0 0 14px" class="next') + detail(b);
   }
 
   function show(v){
     VIEW = v;
-    ['today','next','follow','cust'].forEach(function(k){ $('v-' + k).hidden = k !== v; });
+    ['today','next','follow','cust','rep'].forEach(function(k){ var el = $('v-' + k); el.hidden = k !== v; if (k === v) { el.classList.remove('fade'); void el.offsetWidth; el.classList.add('fade'); } });
     [].forEach.call(document.querySelectorAll('.nv button'), function(b){ b.classList.toggle('on', b.dataset.v === v); });
     window.scrollTo(0, 0);
   }
 
   /* ---------- data ---------- */
+  function skeleton(){ $('kpis').innerHTML = [1,2,3,4].map(function(){ return '<div class="sk" style="height:112px"></div>'; }).join(''); $('v-today').innerHTML = '<div class="sk" style="height:20px;width:40%;margin:24px 0 12px"></div>' + [1,2,3].map(function(){ return '<div class="sk" style="height:110px;margin-bottom:10px"></div>'; }).join(''); }
   function refresh(quiet){
     var rb = $('refBtn'); rb.classList.add('spin');
-    return call('dashData', PIN).then(function(d){
-      D = d; render(); if (!quiet) toast('Data terkini dimuatkan');
-    }).catch(function(e){
-      toast(e, true);
-      if (/PIN/.test(e)) logout();
-    }).then(function(){ rb.classList.remove('spin'); });
+    return api({ op:'data', pin: PIN }).then(function(d){ D = d; render(); if (!quiet) toast('Data terkini dimuatkan'); })
+      .catch(function(e){ toast(e, true); if (/PIN/.test(e)) logout(); })
+      .then(function(){ rb.classList.remove('spin'); });
   }
   function find(row){ row = Number(row); return D.bookings.filter(function(b){ return b.row === row; })[0]; }
-
   function update(b, changes, okMsg){
-    var before = { status: b.status, nota: b.nota, rem: b.rem, rev: b.rev };
+    var before = { status: b.status, nota: b.nota };
     if (changes.status) b.status = changes.status;
     if (changes.nota != null) b.nota = changes.nota;
     render();
-    return call('dashUpdate', PIN, b.row, b.ref, changes).then(function(r){
+    return api({ op:'update', pin: PIN, row: b.row, ref: b.ref, changes: changes }).then(function(r){
       if (changes.mark && r && r.stamp) { b[changes.mark] = r.stamp; render(); }
       if (okMsg) toast(okMsg);
-    }).catch(function(e){
-      b.status = before.status; b.nota = before.nota; render(); toast(e, true);
-    });
+    }).catch(function(e){ b.status = before.status; b.nota = before.nota; render(); toast(e, true); });
   }
 
   /* ---------- login ---------- */
   function login(pin){
-    $('lErr').textContent = ''; $('goBtn').textContent = 'Memuatkan…';
-    PIN = pin;
-    return call('dashData', pin).then(function(d){
-      D = d; store('dash_pin', pin);
-      $('login').hidden = true; $('app').hidden = false;
-      render(); show('today');
-    }).catch(function(e){
-      store('dash_pin', null); $('lErr').textContent = e; $('login').hidden = false; $('app').hidden = true;
-    }).then(function(){ $('goBtn').textContent = 'Masuk'; });
+    $('lErr').textContent = ''; $('goBtn').textContent = 'Memuatkan…'; PIN = pin;
+    $('login').hidden = true; $('app').hidden = false; skeleton();
+    return api({ op:'data', pin: pin }).then(function(d){ D = d; store('dash_pin', pin); render(); show('today'); })
+      .catch(function(e){ store('dash_pin', null); $('lErr').textContent = e; $('login').hidden = false; $('app').hidden = true; })
+      .then(function(){ $('goBtn').textContent = 'Masuk'; });
   }
   function logout(){ store('dash_pin', null); PIN = ''; $('app').hidden = true; $('login').hidden = false; }
 
@@ -471,25 +611,39 @@
   $('q').addEventListener('input', function(e){ Q = e.target.value; renderCust(); });
 
   document.addEventListener('click', function(e){
-    var nv = e.target.closest('.nv button'); if (nv) return show(nv.dataset.v);
-    var st = e.target.closest('[data-go]'); if (st) return show(st.dataset.go);
-    var nb = e.target.closest('[data-note]'); if (nb) { $('n' + nb.dataset.note).classList.toggle('on'); return; }
-    var sn = e.target.closest('[data-savenote]');
-    if (sn) { var b = find(sn.dataset.savenote), v = $('n' + b.row).querySelector('textarea').value; return update(b, { nota: v }, 'Nota disimpan'); }
-    var cu = e.target.closest('[data-cust]'); if (cu && !e.target.closest('a')) { cu.classList.toggle('open'); return; }
-    var a = e.target.closest('a[data-act]');
-    if (a) {   // biar link WhatsApp terbuka, kemaskini Sheet di belakang
-      var bk = find(a.dataset.row), act = a.dataset.act;
+    var el;
+    if ((el = e.target.closest('.nv button'))) return show(el.dataset.v);
+    if ((el = e.target.closest('[data-go]'))) return show(el.dataset.go);
+    if ((el = e.target.closest('[data-day]'))) { e.preventDefault(); DAYF = el.dataset.day ? (DAYF === el.dataset.day ? null : el.dataset.day) : null; return renderNext(compute()); }
+    if ((el = e.target.closest('[data-rm]'))) { var t = D.today, m = REPM || t.slice(0,7), y = +m.slice(0,4), mo = +m.slice(5) + Number(el.dataset.rm);
+      if (mo < 1) { mo = 12; y--; } if (mo > 12) { mo = 1; y++; } var nm = y + '-' + ('0' + mo).slice(-2); if (nm > t.slice(0,7)) return; REPM = nm; return renderRep(); }
+    if ((el = e.target.closest('[data-savenote]'))) { var b0 = find(el.dataset.savenote), v = $('nt' + b0.row).value; return update(b0, { nota: v }, 'Nota disimpan'); }
+    if ((el = e.target.closest('[data-set]'))) { var b1 = find(el.dataset.row), s = el.dataset.set; if (b1.status !== s) update(b1, { status: s }, 'Status: ' + s); return; }
+    if ((el = e.target.closest('a[data-act]'))) {   // biar WhatsApp terbuka, kemaskini Sheet di belakang
+      var bk = find(el.dataset.row), act = el.dataset.act;
       if (act === 'sahkan') setTimeout(function(){ update(bk, { status: 'Disahkan' }, 'Status: Disahkan'); }, 300);
       if ((act === 'rem' && !bk.rem) || (act === 'rev' && !bk.rev)) setTimeout(function(){ update(bk, { mark: act }, act === 'rem' ? 'Reminder ditanda' : 'Review ditanda'); }, 300);
+      return;
+    }
+    if (e.target.closest('a,button,textarea,input')) return;
+    if ((el = e.target.closest('[data-cust]'))) { el.classList.toggle('open'); return; }
+    if ((el = e.target.closest('[data-card]'))) {
+      var row = Number(el.dataset.card);
+      if (window.matchMedia('(min-width:1000px)').matches) { SEL = row; [].forEach.call(document.querySelectorAll('.bk.sel'), function(x){ x.classList.remove('sel'); });
+        [].forEach.call(document.querySelectorAll('[data-card="' + row + '"]'), function(x){ x.classList.add('sel'); }); renderPanel(); }
+      else el.classList.toggle('open');
     }
   });
-  document.addEventListener('change', function(e){
-    var s = e.target.closest('select.st'); if (!s) return;
-    var b = find(s.dataset.row); update(b, { status: s.value }, 'Status: ' + s.value);
-  });
+
+  /* tarik ke bawah untuk refresh */
+  var y0 = null, pulled = 0;
+  document.addEventListener('touchstart', function(e){ y0 = (window.scrollY <= 0 && PIN && D) ? e.touches[0].clientY : null; }, { passive: true });
+  document.addEventListener('touchmove', function(e){ if (y0 == null) return; pulled = Math.max(0, e.touches[0].clientY - y0); $('ptr').style.height = Math.min(56, pulled / 2) + 'px'; $('ptr').textContent = pulled > 110 ? 'Lepaskan untuk refresh' : 'Tarik untuk refresh'; }, { passive: true });
+  document.addEventListener('touchend', function(){ if (y0 == null) return; if (pulled > 110) refresh(); $('ptr').style.height = '0'; y0 = null; pulled = 0; });
+
   document.addEventListener('visibilitychange', function(){ if (!document.hidden && PIN && D) refresh(true); });
   setInterval(function(){ if (!document.hidden && PIN && D) refresh(true); }, 180000);
+  setInterval(function(){ if (!document.hidden && D && VIEW === 'today') renderToday(compute(), nowKL()); }, 60000);
 
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(function(){});
   var saved = load('dash_pin');
