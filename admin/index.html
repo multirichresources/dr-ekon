@@ -461,7 +461,7 @@
   function renderToday(C, now){
     var t = D.today, html = sec('Jadual Hari Ini', C.today.length, dShort(t));
     if (CLOSED_DAYS.indexOf(dObj(t).w) > -1 && !C.todayAll.length) { $('v-today').innerHTML = html + '<div class="empty">Hari ini bengkel tutup. Rehat dulu 😄</div>'; return; }
-    var bySlotMap = {}; C.todayAll.forEach(function(b){ (bySlotMap[b.slot] = bySlotMap[b.slot] || []).push(b); });
+    var bySlotMap = Object.groupBy(C.todayAll, function(b){ return b.slot; });
     var extra = Object.keys(bySlotMap).filter(function(s){ return SLOTS.indexOf(s) < 0; });
     var all = SLOTS.concat(extra).sort();
     html += '<div class="tl" id="tl">';
@@ -532,7 +532,7 @@
       return '<div class="cust" data-cust><div class="r1"><div class="av" style="background:' + avc(c.nama) + '">' + esc(ini(c.nama)) + '</div>' +
         '<div class="who2"><b>' + esc(String(c.nama).toLowerCase()) + '</b><span>' + esc(c.tel) + ' · ' + esc(c.kereta) + '</span></div>' +
         '<span class="cc">' + c.list.length + 'x' + (c.siap ? ' · ' + c.siap + ' siap' : '') + '</span></div>' +
-        '<div class="hist">' + c.list.slice().reverse().map(function(b){
+        '<div class="hist">' + c.list.toReversed().map(function(b){
           return '<div class="hl"><div>' + dShort(b.date) + ', ' + slotFull(b.slot) + '<div class="hm">' + esc(b.masalah || '-') + '</div></div><span class="pill p-' + stKey(b.status) + '">' + esc(b.status) + '</span></div>';
         }).join('') +
         '<div class="acts" style="grid-template-columns:1fr 1fr"><a class="act" href="tel:' + esc(String(c.tel).replace(/[^\d+]/g,'')) + '">' + IC.phone + 'Call</a><a class="act" target="_blank" rel="noopener" href="' + esc(waLink(c.last)) + '">' + IC.wa + 'WhatsApp</a></div></div></div>';
@@ -587,7 +587,7 @@
     var map = {};
     D.bookings.forEach(function(b){ var k = telKey(b.tel); if (!k) return; (map[k] = map[k] || []).push(b); });
     return Object.keys(map).map(function(k){
-      var l = map[k].slice().sort(bySlot), last = l[l.length-1], act = l.filter(active);
+      var l = map[k].toSorted(bySlot), last = l[l.length-1], act = l.filter(active);
       var cars = l.map(function(b){ return b.kereta + (b.plat ? ' (' + b.plat + ')' : ''); }).filter(function(v, i, a){ return a.indexOf(v) === i; }).join('; ');
       var mas = {}; l.forEach(function(b){ String(b.masalah||'').split(',').forEach(function(s){ s = s.trim(); if (s) mas[s] = 1; }); });
       return { last: last.date, r: [first(last.nama), last.tel, cars, l.length, l.filter(function(b){ return b.status === 'Siap'; }).length,
@@ -603,7 +603,7 @@
       rows = custRows(); telCol = 1;
     } else {
       head = ['No. Rujukan','Tarikh Servis','Slot','Nama','No. Telefon','Kereta','No. Plat','Masalah','Catatan Pelanggan','Status','Nota Kerani','Reminder Dihantar','Review Diminta'];
-      rows = D.bookings.slice().sort(bySlot).reverse().map(function(b){ return [b.ref, b.date, b.slot, first(b.nama), b.tel, b.kereta, b.plat, b.masalah, b.catatan, b.status, b.nota, b.rem, b.rev]; });
+      rows = D.bookings.toSorted(bySlot).toReversed().map(function(b){ return [b.ref, b.date, b.slot, first(b.nama), b.tel, b.kereta, b.plat, b.masalah, b.catatan, b.status, b.nota, b.rem, b.rev]; });
       telCol = 4;
     }
     var csv = '\ufeff' + [head.join(',')].concat(rows.map(function(r){ return r.map(function(v, i){ return csvCell(v, i === telCol); }).join(','); })).join('\r\n');
@@ -651,7 +651,7 @@
   function logout(){ store('dash_pin', null); PIN = ''; $('app').hidden = true; $('login').hidden = false; }
 
   $('goBtn').addEventListener('click', function(){ var p = $('pin').value.trim(); if (p) login(p); });
-  $('pin').addEventListener('keydown', function(e){ if (e.key === 'Enter') $('goBtn').click(); });
+  $('pin').addEventListener('keydown', function(e){ if (e.key === 'Enter' && !e.isComposing) $('goBtn').click(); });
   $('refBtn').addEventListener('click', function(){ refresh(); });
   $('q').addEventListener('input', function(e){ Q = e.target.value; renderCust(); });
 
